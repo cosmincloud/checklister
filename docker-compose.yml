@@ -1,0 +1,24 @@
+version: "2.1"
+
+services:
+  db:
+    image: postgres:10
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: checklister
+      POSTGRES_USER: checklister
+      POSTGRES_PASSWORD: Tes0ohS7bahnaa8aum2eeYahYit5Ba
+      PGDATA: /var/lib/postgresql/data/pgdata
+    #volumes:
+    #  - "./.data:/var/lib/postgresql/data"
+
+  checklister:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/checklister
+      SPRING_DATASOURCE_USERNAME: checklister
+      SPRING_DATASOURCE_PASSWORD: Tes0ohS7bahnaa8aum2eeYahYit5Ba
+
