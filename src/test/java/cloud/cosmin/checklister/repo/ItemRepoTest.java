@@ -30,7 +30,7 @@ public class ItemRepoTest {
         ItemEntity newItem = new ItemEntity();
         newItem.setContent("test content");
         newItem.setList(list);
-        newItem.setRank(0L);
+        newItem.setRank(0);
         ItemEntity savedEntity = itemRepo.save(newItem);
 
         Optional<ItemEntity> maybeItem = itemRepo.findById(savedEntity.getId());
@@ -39,7 +39,7 @@ public class ItemRepoTest {
         ItemEntity item = maybeItem.get();
         assertEquals("test content", item.getContent());
         assertEquals(list.getId(), item.getList().getId());
-        assertEquals(Long.valueOf(0L), item.getRank());
+        assertEquals(0, item.getRank());
         assertEquals("title", list.getTitle());
 
         Optional<ListEntity> maybeListWithItem = listRepo.findById(list.getId());

@@ -13,7 +13,7 @@ CREATE TABLE list (
 CREATE TABLE item (
     id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     content       TEXT NOT NULL,
-    rank          BIGINT NOT NULL,
+    rank          INT NOT NULL,
     list_id       UUID REFERENCES list (id) NOT NULL,
     created_at    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
     last_modified TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),

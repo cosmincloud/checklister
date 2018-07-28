@@ -21,7 +21,7 @@ public class ItemEntity {
     private String content;
 
     @Column(nullable = false)
-    private Long rank;
+    private int rank;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -43,11 +43,11 @@ public class ItemEntity {
         this.content = content;
     }
 
-    public Long getRank() {
+    public int getRank() {
         return rank;
     }
 
-    public void setRank(Long rank) {
+    public void setRank(int rank) {
         this.rank = rank;
     }
 

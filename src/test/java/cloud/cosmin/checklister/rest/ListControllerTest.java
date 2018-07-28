@@ -1,8 +1,10 @@
 package cloud.cosmin.checklister.rest;
 
 import cloud.cosmin.checklister.dao.ListEntity;
+import cloud.cosmin.checklister.repo.ItemRepo;
 import cloud.cosmin.checklister.repo.ListRepo;
 import cloud.cosmin.checklister.service.ConverterService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.when;
+import static org.mockito.Mockito.reset;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +35,9 @@ public class ListControllerTest {
 
     @MockBean
     private ListRepo listRepo;
+
+    @MockBean
+    private ItemRepo itemRepo;
 
     @Test
     public void testCreate() throws Exception {
@@ -61,5 +67,16 @@ public class ListControllerTest {
         String id = "/api/v1/list/" + listEntity.getId().toString();
         MvcResult result = this.mvc.perform(get(id)).andReturn();
         assertEquals(200, result.getResponse().getStatus());
+    }
+
+    @Test
+    public void testAddItem() throws Exception {
+        ListEntity listEntity = new ListEntity();
+        listEntity.setId(UUID.randomUUID());
+        listEntity.setTitle("title");
+
+        when(listRepo.findById(any())).thenReturn(Optional.of(listEntity));
+
+
     }
 }

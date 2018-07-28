@@ -1,8 +1,13 @@
 package cloud.cosmin.checklister.rest;
 
+import cloud.cosmin.checklister.dao.ItemEntity;
 import cloud.cosmin.checklister.dao.ListEntity;
+import cloud.cosmin.checklister.dto.ItemGetDto;
+import cloud.cosmin.checklister.dto.ItemPostDto;
 import cloud.cosmin.checklister.dto.ListGetDto;
 import cloud.cosmin.checklister.dto.ListPostDto;
+import cloud.cosmin.checklister.dto.ListWithItemsDto;
+import cloud.cosmin.checklister.repo.ItemRepo;
 import cloud.cosmin.checklister.repo.ListRepo;
 import cloud.cosmin.checklister.service.ConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +25,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.lang.String.format;
+
 @RestController
 public class ListController {
     @Autowired
     private ListRepo listRepo;
+
+    @Autowired
+    private ItemRepo itemRepo;
 
     @Autowired
     private ConverterService converterService;
@@ -62,5 +72,54 @@ public class ListController {
 
         ListEntity list = optionalList.get();
         return ResponseEntity.ok(converterService.listDto(list));
+    }
+
+    @GetMapping("/api/v1/list/{listId}/item")
+    public ResponseEntity<ListWithItemsDto> getListWithItems(@PathVariable UUID listId) {
+        if(listId == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<ListEntity> optionalList = listRepo.findById(listId);
+        if(!optionalList.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ListEntity list = optionalList.get();
+        ListWithItemsDto dto = new ListWithItemsDto();
+        dto.id = list.getId();
+        dto.title = list.getTitle();
+        dto.items = new ArrayList<>();
+        for(ItemEntity item : list.getItems()) {
+            ItemGetDto itemDto = new ItemGetDto();
+            itemDto.id = item.getId();
+            itemDto.content = item.getContent();
+            itemDto.rank = item.getRank();
+            dto.items.add(itemDto);
+        }
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/api/v1/list/{listId}/item")
+    public ResponseEntity<ItemGetDto> createListItem(@PathVariable UUID listId,
+                                                     @RequestBody ItemPostDto itemDto) {
+        if(listId == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<ListEntity> optionalList = listRepo.findById(listId);
+        if(!optionalList.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ListEntity list = optionalList.get();
+
+        ItemEntity newItem = new ItemEntity();
+        newItem.setContent(itemDto.content);
+        newItem.setRank(list.getItems().size());
+        newItem.setList(list);
+
+        ItemEntity savedItem = itemRepo.save(newItem);
+        return ResponseEntity.ok(converterService.itemDto(savedItem));
     }
 }
