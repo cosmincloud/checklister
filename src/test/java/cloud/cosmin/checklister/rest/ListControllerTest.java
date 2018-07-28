@@ -11,15 +11,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
-import static org.junit.Assert.*;
-import org.springframework.boot.test.mock.mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ListController.class)
@@ -46,5 +48,18 @@ public class ListControllerTest {
         ).andExpect(status().isCreated());
 
 
+    }
+
+    @Test
+    public void testGetSingle() throws Exception {
+        ListEntity listEntity = new ListEntity();
+        listEntity.setId(UUID.randomUUID());
+        listEntity.setTitle("title");
+
+        when(listRepo.findById(any())).thenReturn(Optional.of(listEntity));
+
+        String id = "/api/v1/list/" + listEntity.getId().toString();
+        MvcResult result = this.mvc.perform(get(id)).andReturn();
+        assertEquals(200, result.getResponse().getStatus());
     }
 }
