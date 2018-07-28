@@ -50,13 +50,12 @@ public class ListController {
     }
 
     @GetMapping("/api/v1/list/{listId}")
-    public ResponseEntity<ListGetDto> getList(@PathVariable String listId) {
+    public ResponseEntity<ListGetDto> getList(@PathVariable UUID listId) {
         if(listId == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        UUID listUuid = UUID.fromString(listId);
-        Optional<ListEntity> optionalList = listRepo.findById(listUuid);
+        Optional<ListEntity> optionalList = listRepo.findById(listId);
         if(!optionalList.isPresent()) {
             return ResponseEntity.notFound().build();
         }
