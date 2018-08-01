@@ -38,6 +38,7 @@ public class ItemRepoTest {
 
         ItemEntity item = maybeItem.get();
         assertEquals("test content", item.getContent());
+        assertEquals("text/plain", item.getContentType());
         assertEquals(list.getId(), item.getList().getId());
         assertEquals(0, item.getRank());
         assertEquals("title", list.getTitle());

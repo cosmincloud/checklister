@@ -1,0 +1,2 @@
+ALTER TABLE item
+ADD COLUMN content_type VARCHAR(256) NOT NULL DEFAULT 'text/plain';

@@ -20,6 +20,7 @@ public class ConverterService {
         dto.id = itemEntity.getId();
         dto.rank = itemEntity.getRank();
         dto.content = itemEntity.getContent();
+        dto.contentType = itemEntity.getContentType();
         return dto;
     }
 }

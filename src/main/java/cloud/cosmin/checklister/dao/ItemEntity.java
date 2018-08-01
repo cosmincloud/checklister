@@ -1,5 +1,7 @@
 package cloud.cosmin.checklister.dao;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
+@DynamicInsert
 @Table(name = "item")
 public class ItemEntity {
     @Id
@@ -22,6 +25,9 @@ public class ItemEntity {
 
     @Column(nullable = false)
     private int rank;
+
+    @Column(nullable = false)
+    private String contentType;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -41,6 +47,14 @@ public class ItemEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public int getRank() {
