@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:10
     ports:
-      - 5432:5432
+      - 5432
     environment:
       POSTGRES_DB: checklister
       POSTGRES_USER: checklister
@@ -16,7 +16,7 @@ services:
   checklister:
     build: .
     ports:
-      - 8080:8080
+      - 8180:8080
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/checklister
       SPRING_DATASOURCE_USERNAME: checklister

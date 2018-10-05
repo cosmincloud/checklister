@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -69,6 +70,26 @@ public class ListController {
 
         ListEntity list = optionalList.get();
         return ResponseEntity.ok(converterService.listDto(list));
+    }
+
+    @PutMapping(value = "/api/v1/list/{listId}")
+    public ResponseEntity<ListGetDto> patchList(@PathVariable UUID listId,
+                                                @RequestBody ListPostDto listDto) {
+        if(listId == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<ListEntity> optionalList = listRepo.findById(listId);
+        if(!optionalList.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ListEntity list = optionalList.get();
+        list.setTitle(listDto.title);
+
+        ListEntity saved = listRepo.save(list);
+        ListGetDto dto = converterService.listDto(saved);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/api/v1/list/{listId}/item")
