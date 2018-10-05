@@ -40,7 +40,7 @@ public class BaseIT {
         post.title = title;
 
         var listUri = getListUrl(service) + "/" + id.toString();
-        template.put(listUri, post, ListGetDto.class);
+        template.put(listUri, post);
 
         return template.getForObject(listUri, ListGetDto.class);
     }
