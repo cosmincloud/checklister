@@ -4,6 +4,8 @@ import cloud.cosmin.checklister.dto.ItemGetDto;
 import cloud.cosmin.checklister.dto.ItemPostDto;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -29,5 +31,12 @@ public class ListCreationIT extends BaseIT {
         assertEquals("testcontent", newItem.content);
         assertEquals("text/plain", newItem.contentType);
         assertEquals(0, newItem.rank);
+    }
+
+    @Test
+    public void listCreationWithId() {
+        var uuid = UUID.randomUUID();
+        var newList = createList(uuid, "title");
+        assertEquals(uuid, newList.id);
     }
 }

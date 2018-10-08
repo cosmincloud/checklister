@@ -49,9 +49,13 @@ public class ListController {
     @PostMapping(value = "/api/v1/list", consumes = "application/json")
     public ResponseEntity<ListGetDto> createList(@RequestBody ListPostDto listDto) {
         ListEntity newList = new ListEntity();
+        if(listDto.uuid != null) {
+            newList.setId(listDto.uuid);
+        } else {
+            newList.setId(UUID.randomUUID());
+        }
         newList.setTitle(listDto.title);
         ListEntity saved = listRepo.save(newList);
-        ListGetDto dto = converterService.listDto(saved);
         return ResponseEntity
                 .created(URI.create("/api/v1/list/" + saved.getId()))
                 .build();

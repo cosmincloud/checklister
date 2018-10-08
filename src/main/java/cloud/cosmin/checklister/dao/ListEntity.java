@@ -17,7 +17,6 @@ import java.util.UUID;
 @Table(name = "list")
 public class ListEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(nullable = false)

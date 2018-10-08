@@ -10,7 +10,7 @@ public class ServiceDiscovery {
         }
 
         if(port == null) {
-            port = "8180";
+            port = "8080";
         }
 
         return new Service(host, Integer.valueOf(port));

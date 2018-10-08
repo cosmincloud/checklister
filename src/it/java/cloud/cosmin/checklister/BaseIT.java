@@ -35,6 +35,17 @@ public class BaseIT {
         return template.getForObject(service.http + newListUri.toString(), ListGetDto.class);
     }
 
+    protected ListGetDto createList(UUID uuid, String title) {
+        var post = new ListPostDto();
+        post.uuid = uuid;
+        post.title = title;
+
+        var newListUri = template.postForLocation(getListUrl(service), post, ListGetDto.class);
+        assertNotNull(newListUri);
+
+        return template.getForObject(service.http + newListUri.toString(), ListGetDto.class);
+    }
+
     protected ListGetDto updateList(UUID id, String title) {
         var post = new ListPostDto();
         post.title = title;
