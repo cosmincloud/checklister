@@ -1,5 +1,5 @@
 node {
   stage("hello") {
-    echo "Hello!"
+    sh "./gradlew clean test"
   }
 }

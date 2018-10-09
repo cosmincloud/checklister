@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,6 +23,7 @@ public class ListRepoTest {
     @Test
     public void testCreateList() {
         ListEntity listEntity = new ListEntity();
+        listEntity.setId(UUID.randomUUID());
         listEntity.setTitle("title");
         ListEntity entity = listRepo.save(listEntity);
 
