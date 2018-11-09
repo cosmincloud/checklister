@@ -77,7 +77,7 @@ public class ListController {
     }
 
     @PutMapping(value = "/api/v1/list/{listId}")
-    public ResponseEntity<ListGetDto> patchList(@PathVariable UUID listId,
+    public ResponseEntity<ListGetDto> updateList(@PathVariable UUID listId,
                                                 @RequestBody ListPostDto listDto) {
         if(listId == null) {
             return ResponseEntity.badRequest().build();
@@ -143,30 +143,5 @@ public class ListController {
         return ResponseEntity
                 .created(URI.create("/api/v1/list/" + listId.toString() + "/item/" + savedItem.getId()))
                 .build();
-    }
-
-    // TODO: Add endpoint for direct item access (/api/v1/item/{itemId}) ?
-    @GetMapping("/api/v1/list/{listId}/item/{itemId}")
-    public ResponseEntity<ItemGetDto> getListItem(@PathVariable UUID listId,
-                                                  @PathVariable UUID itemId) {
-        if(listId == null || itemId == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Optional<ListEntity> optionalList = listRepo.findById(listId);
-        if(!optionalList.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Optional<ItemEntity> optionalItem = optionalList.get().getItems().stream()
-                .filter(i -> i.getId().equals(itemId))
-                .findFirst();
-
-        if(!optionalItem.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        var dto = converterService.itemDto(optionalItem.get());
-        return ResponseEntity.ok(dto);
     }
 }
