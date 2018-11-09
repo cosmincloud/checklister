@@ -18,6 +18,7 @@ public class ConverterService {
     public ItemGetDto itemDto(ItemEntity itemEntity) {
         ItemGetDto dto = new ItemGetDto();
         dto.id = itemEntity.getId();
+        dto.list = itemEntity.getList().getId();
         dto.rank = itemEntity.getRank();
         dto.content = itemEntity.getContent();
         dto.contentType = itemEntity.getContentType();
