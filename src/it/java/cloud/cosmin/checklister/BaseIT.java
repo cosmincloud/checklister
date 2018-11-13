@@ -5,9 +5,9 @@ import cloud.cosmin.checklister.discovery.ServiceDiscovery;
 import cloud.cosmin.checklister.dto.ListGetDto;
 import cloud.cosmin.checklister.dto.ListPostDto;
 import org.junit.Before;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
@@ -21,7 +21,7 @@ public class BaseIT {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         this.service = ServiceDiscovery.getService("checklister");
     }
 
