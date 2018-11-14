@@ -3,6 +3,6 @@ node (label: 'jdk11') {
     checkout scm
   }
   stage("hello") {
-    sh "./gradlew clean test"
+    sh "./gradlew clean classes"
   }
 }
