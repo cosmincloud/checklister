@@ -1,4 +1,5 @@
-node (label: 'jdk11') {
+//node (label: 'jdk11') {
+node {
   stage("scm") {
     checkout scm
   }
