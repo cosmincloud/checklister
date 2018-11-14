@@ -3,7 +3,7 @@ node {
   stage("scm") {
     checkout scm
   }
-  stage("hello") {
+  stage("compile") {
     sh "./gradlew clean classes"
   }
 }
