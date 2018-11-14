@@ -2,6 +2,8 @@ package cloud.cosmin.checklister;
 
 import cloud.cosmin.checklister.discovery.Service;
 import cloud.cosmin.checklister.discovery.ServiceDiscovery;
+import cloud.cosmin.checklister.dto.ItemGetDto;
+import cloud.cosmin.checklister.dto.ItemPostDto;
 import cloud.cosmin.checklister.dto.ListGetDto;
 import cloud.cosmin.checklister.dto.ListPostDto;
 import org.junit.Before;
@@ -18,6 +20,15 @@ public class BaseIT {
 
     protected String getListUrl(Service service) {
         return service.http + "/api/v1/list";
+    }
+
+
+    private String getItemPostUrl(UUID listId) {
+        return getListUrl(service) + "/" + listId.toString() + "/item";
+    }
+
+    private String getItemUrl(UUID itemId) {
+        return service.http + "/api/v1/item/" + itemId.toString();
     }
 
     @Before
@@ -54,5 +65,15 @@ public class BaseIT {
         template.put(listUri, post);
 
         return template.getForObject(listUri, ListGetDto.class);
+    }
+
+    protected ItemGetDto addItem(UUID listId, ItemPostDto item) {
+        var url = getItemPostUrl(listId);
+        return template.postForObject(url, item, ItemGetDto.class);
+    }
+
+    protected ItemGetDto getItem(UUID itemId) {
+        var url = getItemUrl(itemId);
+        return template.getForObject(url, ItemGetDto.class);
     }
 }
