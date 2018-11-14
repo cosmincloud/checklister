@@ -135,13 +135,15 @@ public class ListController {
 
         ItemEntity newItem = new ItemEntity();
         newItem.setContent(itemDto.content);
+        newItem.setContentType(itemDto.contentType);
         newItem.setRank(list.getItems().size());
         newItem.setList(list);
 
         ItemEntity savedItem = itemRepo.save(newItem);
+        ItemGetDto dto = converterService.itemDto(savedItem);
 
         return ResponseEntity
                 .created(URI.create("/api/v1/list/" + listId.toString() + "/item/" + savedItem.getId()))
-                .build();
+                .body(dto);
     }
 }
