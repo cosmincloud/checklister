@@ -83,7 +83,7 @@ public class ListController {
     }
 
     @PutMapping(value = "/api/v1/list/{listId}")
-    public ResponseEntity<ListGetDto> patchList(@PathVariable UUID listId,
+    public ResponseEntity<ListGetDto> updateList(@PathVariable UUID listId,
                                                 @RequestBody ListPostDto listDto) {
         if(listId == null) {
             return ResponseEntity.badRequest().build();
@@ -146,6 +146,7 @@ public class ListController {
         newItem.setList(list);
 
         ItemEntity savedItem = itemRepo.save(newItem);
+        ItemGetDto dto = converterService.itemDto(savedItem);
 
         return ResponseEntity
                 .created(URI.create("/api/v1/list/" + listId.toString() + "/item/" + savedItem.getId()))

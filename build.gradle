@@ -64,6 +64,10 @@ dependencies {
 
     compile('org.bitbucket.cowwoc:requirements-core:4.0.4-RC')
 
+    // Jackson
+    compile('com.fasterxml.jackson.core:jackson-databind:2.9.7')
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.7'
+
     // because of Java 9+
     // https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdeffounderror-javax-xml-bind-jaxbexception-in-j#43574427
     // https://blog.sourced-bvba.be/article/2017/12/17/java9-spring/

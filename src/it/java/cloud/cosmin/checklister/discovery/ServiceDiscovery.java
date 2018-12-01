@@ -1,7 +1,32 @@
 package cloud.cosmin.checklister.discovery;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import java.io.File;
+import java.io.IOException;
+
 public class ServiceDiscovery {
-    public static Service getService(String name) {
+    private static ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    private static int getServicePort(String serviceName, int internalPort) throws IOException {
+        JsonNode tree = mapper.readTree(new File("docker-compose.yml"));
+
+        JsonNode ports = tree.get("services").get(serviceName).get("ports");
+
+        for(int i = 0; i < ports.size(); i++) {
+            String port = ports.get(i).asText();
+            if(port.contains(":")) {
+                String[] portParts = port.split(":");
+                if(Integer.parseInt(portParts[1]) == internalPort) {
+                    return Integer.parseInt(portParts[0]);
+                }
+            }
+        }
+        return -1;
+    }
+
+    public static Service getService(String name) throws IOException {
         String host = System.getenv(name + "_HOST");
         String port = System.getenv(name + "_TCP_8080");
 
@@ -10,7 +35,7 @@ public class ServiceDiscovery {
         }
 
         if(port == null) {
-            port = "8080";
+            return new Service(host, getServicePort("checklister", 8080));
         }
 
         return new Service(host, Integer.valueOf(port));
