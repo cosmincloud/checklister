@@ -28,11 +28,11 @@ public class ConverterServiceTest {
     public void itemConvert() {
         ConverterService svc = new ConverterService();
 
-        var list = new ListEntity();
+        ListEntity list = new ListEntity();
         list.setId(UUID.randomUUID());
         list.setTitle("title");
 
-        var item = new ItemEntity();
+        ItemEntity item = new ItemEntity();
         item.setId(UUID.randomUUID());
         item.setList(list);
         item.setContent("content");

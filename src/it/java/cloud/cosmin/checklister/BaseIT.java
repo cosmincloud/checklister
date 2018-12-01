@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
@@ -37,43 +38,43 @@ public class BaseIT {
     }
 
     protected ListGetDto createList(String title) {
-        var post = new ListPostDto();
+        ListPostDto post = new ListPostDto();
         post.title = title;
 
-        var newListUri = template.postForLocation(getListUrl(service), post, ListGetDto.class);
+        URI newListUri = template.postForLocation(getListUrl(service), post, ListGetDto.class);
         assertNotNull(newListUri);
 
         return template.getForObject(service.http + newListUri.toString(), ListGetDto.class);
     }
 
     protected ListGetDto createList(UUID uuid, String title) {
-        var post = new ListPostDto();
+        ListPostDto post = new ListPostDto();
         post.uuid = uuid;
         post.title = title;
 
-        var newListUri = template.postForLocation(getListUrl(service), post, ListGetDto.class);
+        URI newListUri = template.postForLocation(getListUrl(service), post, ListGetDto.class);
         assertNotNull(newListUri);
 
         return template.getForObject(service.http + newListUri.toString(), ListGetDto.class);
     }
 
     protected ListGetDto updateList(UUID id, String title) {
-        var post = new ListPostDto();
+        ListPostDto post = new ListPostDto();
         post.title = title;
 
-        var listUri = getListUrl(service) + "/" + id.toString();
+        String listUri = getListUrl(service) + "/" + id.toString();
         template.put(listUri, post);
 
         return template.getForObject(listUri, ListGetDto.class);
     }
 
     protected ItemGetDto addItem(UUID listId, ItemPostDto item) {
-        var url = getItemPostUrl(listId);
+        String url = getItemPostUrl(listId);
         return template.postForObject(url, item, ItemGetDto.class);
     }
 
     protected ItemGetDto getItem(UUID itemId) {
-        var url = getItemUrl(itemId);
+        String url = getItemUrl(itemId);
         return template.getForObject(url, ItemGetDto.class);
     }
 }

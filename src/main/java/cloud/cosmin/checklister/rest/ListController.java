@@ -27,14 +27,20 @@ import java.util.UUID;
 
 @RestController
 public class ListController {
-    @Autowired
-    private ListRepo listRepo;
+    private final ListRepo listRepo;
+    private final ItemRepo itemRepo;
+    private final ConverterService converterService;
 
     @Autowired
-    private ItemRepo itemRepo;
-
-    @Autowired
-    private ConverterService converterService;
+    public ListController(
+            ListRepo listRepo,
+            ItemRepo itemRepo,
+            ConverterService converterService
+    ) {
+        this.listRepo = listRepo;
+        this.itemRepo = itemRepo;
+        this.converterService = converterService;
+    }
 
     @GetMapping("/api/v1/list")
     public ResponseEntity<List<ListGetDto>> getAllLists() {
@@ -113,7 +119,7 @@ public class ListController {
         dto.title = list.getTitle();
         dto.items = new ArrayList<>();
         for(ItemEntity item : list.getItems()) {
-            var itemDto = converterService.itemDto(item);
+            ItemGetDto itemDto = converterService.itemDto(item);
             dto.items.add(itemDto);
         }
         return ResponseEntity.ok(dto);
@@ -144,6 +150,31 @@ public class ListController {
 
         return ResponseEntity
                 .created(URI.create("/api/v1/list/" + listId.toString() + "/item/" + savedItem.getId()))
-                .body(dto);
+                .build();
+    }
+
+    // TODO: Add endpoint for direct item access (/api/v1/item/{itemId}) ?
+    @GetMapping("/api/v1/list/{listId}/item/{itemId}")
+    public ResponseEntity<ItemGetDto> getListItem(@PathVariable UUID listId,
+                                                  @PathVariable UUID itemId) {
+        if(listId == null || itemId == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<ListEntity> optionalList = listRepo.findById(listId);
+        if(!optionalList.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<ItemEntity> optionalItem = optionalList.get().getItems().stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst();
+
+        if(!optionalItem.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ItemGetDto dto = converterService.itemDto(optionalItem.get());
+        return ResponseEntity.ok(dto);
     }
 }

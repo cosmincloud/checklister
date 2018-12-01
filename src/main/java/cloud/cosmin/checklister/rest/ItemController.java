@@ -36,7 +36,7 @@ public class ItemController {
             return ResponseEntity.notFound().build();
         }
 
-        var dto = converterService.itemDto(optionalItem.get());
+        ItemGetDto dto = converterService.itemDto(optionalItem.get());
         return ResponseEntity.ok(dto);
     }
 

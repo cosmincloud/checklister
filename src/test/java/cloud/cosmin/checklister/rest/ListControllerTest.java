@@ -1,43 +1,41 @@
 package cloud.cosmin.checklister.rest;
 
+import cloud.cosmin.checklister.dao.ItemEntity;
 import cloud.cosmin.checklister.dao.ListEntity;
+import cloud.cosmin.checklister.dto.ItemGetDto;
+import cloud.cosmin.checklister.dto.ItemPostDto;
+import cloud.cosmin.checklister.dto.ListGetDto;
+import cloud.cosmin.checklister.dto.ListPostDto;
 import cloud.cosmin.checklister.repo.ItemRepo;
 import cloud.cosmin.checklister.repo.ListRepo;
 import cloud.cosmin.checklister.service.ConverterService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.when;
-import static org.mockito.Mockito.reset;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.verify;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(ListController.class)
-@Import(ConverterService.class)
 public class ListControllerTest {
-    @Autowired
-    private MockMvc mvc;
+    @Mock private ListRepo listRepo;
+    @Mock private ItemRepo itemRepo;
+    @Mock private ConverterService converterService;
+    @InjectMocks private ListController controller;
 
-    @MockBean
-    private ListRepo listRepo;
-
-    @MockBean
-    private ItemRepo itemRepo;
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void testCreate() throws Exception {
@@ -47,36 +45,57 @@ public class ListControllerTest {
         savedEntity.setTitle("title");
         when(listRepo.save(any())).thenReturn(savedEntity);
 
-        this.mvc.perform(
-                post("/api/v1/list")
-                        .contentType("application/json")
-                        .content("{\"title\":\"mytitle\"}")
-        ).andExpect(status().isCreated());
+        ListPostDto listPostDto = new ListPostDto();
+        listPostDto.title = "title";
+        listPostDto.uuid = randomUUID;
+        ResponseEntity<ListGetDto> response = controller.createList(listPostDto);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
-
+        ListEntity entity = new ListEntity();
+        entity.setId(randomUUID);
+        entity.setTitle("title");
+        verify(listRepo).save(entity);
     }
 
     @Test
     public void testGetSingle() throws Exception {
+        UUID randomUUID = UUID.randomUUID();
         ListEntity listEntity = new ListEntity();
-        listEntity.setId(UUID.randomUUID());
+        listEntity.setId(randomUUID);
         listEntity.setTitle("title");
 
         when(listRepo.findById(any())).thenReturn(Optional.of(listEntity));
 
         String id = "/api/v1/list/" + listEntity.getId().toString();
-        MvcResult result = this.mvc.perform(get(id)).andReturn();
-        assertEquals(200, result.getResponse().getStatus());
+
+        ResponseEntity<ListGetDto> response = controller.getList(randomUUID);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void testAddItem() throws Exception {
+        UUID randomUUID = UUID.randomUUID();
         ListEntity listEntity = new ListEntity();
-        listEntity.setId(UUID.randomUUID());
+        listEntity.setId(randomUUID);
         listEntity.setTitle("title");
+        listEntity.setItems(new ArrayList<>());
 
         when(listRepo.findById(any())).thenReturn(Optional.of(listEntity));
 
+        ItemEntity entity = new ItemEntity();
+        entity.setContent("content");
+        entity.setContentType("contentType");
+        entity.setRank(0);
+        entity.setList(listEntity);
+        when(itemRepo.save(entity)).thenReturn(entity);
 
+        ItemPostDto itemPostDto = new ItemPostDto();
+        itemPostDto.content = "content";
+        itemPostDto.contentType = "contentType";
+
+        ResponseEntity<ItemGetDto> response = controller.createListItem(randomUUID, itemPostDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(itemRepo).save(entity);
     }
 }
