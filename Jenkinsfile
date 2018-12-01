@@ -1,6 +1,6 @@
 node (label: 'jdk8') {
   stage("scm") {
-    cleanWs
+    cleanWs()
     checkout scm
   }
   stage("build") {
