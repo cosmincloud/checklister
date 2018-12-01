@@ -2,6 +2,7 @@ package cloud.cosmin.checklister.repo;
 
 import cloud.cosmin.checklister.dao.ItemEntity;
 import cloud.cosmin.checklister.dao.ListEntity;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +14,12 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class ItemRepoTest {
-    @Autowired
     private ListRepo listRepo;
-
-    @Autowired
     private ItemRepo itemRepo;
 
     @Test
+    @Ignore
     public void testCreateListAddItem() {
         ListEntity listEntity = new ListEntity();
         listEntity.setId(UUID.randomUUID());

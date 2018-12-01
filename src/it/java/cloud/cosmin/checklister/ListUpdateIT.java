@@ -1,5 +1,6 @@
 package cloud.cosmin.checklister;
 
+import cloud.cosmin.checklister.dto.ListGetDto;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -7,8 +8,8 @@ import static org.junit.Assert.assertEquals;
 public class ListUpdateIT extends BaseIT {
     @Test
     public void listUpdate() {
-        var newList = createList("testlist");
-        var updatedList = updateList(newList.id, "newtitle");
+        ListGetDto newList = createList("testlist");
+        ListGetDto updatedList = updateList(newList.id, "newtitle");
         assertEquals("newtitle", updatedList.title);
     }
 }

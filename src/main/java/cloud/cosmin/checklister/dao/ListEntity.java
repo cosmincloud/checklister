@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -48,5 +49,20 @@ public class ListEntity {
 
     public void setItems(List<ItemEntity> items) {
         this.items = items;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ListEntity that = (ListEntity) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(items, that.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, items);
     }
 }

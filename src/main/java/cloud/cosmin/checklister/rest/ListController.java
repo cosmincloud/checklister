@@ -27,14 +27,20 @@ import java.util.UUID;
 
 @RestController
 public class ListController {
-    @Autowired
-    private ListRepo listRepo;
+    private final ListRepo listRepo;
+    private final ItemRepo itemRepo;
+    private final ConverterService converterService;
 
     @Autowired
-    private ItemRepo itemRepo;
-
-    @Autowired
-    private ConverterService converterService;
+    public ListController(
+            ListRepo listRepo,
+            ItemRepo itemRepo,
+            ConverterService converterService
+    ) {
+        this.listRepo = listRepo;
+        this.itemRepo = itemRepo;
+        this.converterService = converterService;
+    }
 
     @GetMapping("/api/v1/list")
     public ResponseEntity<List<ListGetDto>> getAllLists() {
@@ -113,7 +119,7 @@ public class ListController {
         dto.title = list.getTitle();
         dto.items = new ArrayList<>();
         for(ItemEntity item : list.getItems()) {
-            var itemDto = converterService.itemDto(item);
+            ItemGetDto itemDto = converterService.itemDto(item);
             dto.items.add(itemDto);
         }
         return ResponseEntity.ok(dto);
@@ -135,6 +141,7 @@ public class ListController {
 
         ItemEntity newItem = new ItemEntity();
         newItem.setContent(itemDto.content);
+        newItem.setContentType(itemDto.contentType);
         newItem.setRank(list.getItems().size());
         newItem.setList(list);
 
@@ -166,7 +173,7 @@ public class ListController {
             return ResponseEntity.notFound().build();
         }
 
-        var dto = converterService.itemDto(optionalItem.get());
+        ItemGetDto dto = converterService.itemDto(optionalItem.get());
         return ResponseEntity.ok(dto);
     }
 }
