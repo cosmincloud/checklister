@@ -3,7 +3,7 @@ node (label: 'jdk11') {
     cleanWs
     checkout scm
   }
-  stage("compile") {
-    sh "./gradlew clean classes"
+  stage("build") {
+    sh "./gradlew clean build"
   }
 }
