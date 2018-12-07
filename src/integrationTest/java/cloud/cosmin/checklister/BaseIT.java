@@ -38,9 +38,7 @@ public class BaseIT {
     }
 
     protected ListGetDto createList(String title) {
-        ListPostDto post = new ListPostDto();
-        post.title = title;
-
+        ListPostDto post = new ListPostDto(null, title);
         URI newListUri = template.postForLocation(getListUrl(service), post, ListGetDto.class);
         assertNotNull(newListUri);
 
@@ -48,10 +46,7 @@ public class BaseIT {
     }
 
     protected ListGetDto createList(UUID uuid, String title) {
-        ListPostDto post = new ListPostDto();
-        post.uuid = uuid;
-        post.title = title;
-
+        ListPostDto post = new ListPostDto(uuid, title);
         URI newListUri = template.postForLocation(getListUrl(service), post, ListGetDto.class);
         assertNotNull(newListUri);
 
@@ -59,9 +54,7 @@ public class BaseIT {
     }
 
     protected ListGetDto updateList(UUID id, String title) {
-        ListPostDto post = new ListPostDto();
-        post.title = title;
-
+        ListPostDto post = new ListPostDto(null, title);
         String listUri = getListUrl(service) + "/" + id.toString();
         template.put(listUri, post);
 

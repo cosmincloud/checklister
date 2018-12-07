@@ -9,7 +9,7 @@ public class ListUpdateIT extends BaseIT {
     @Test
     public void listUpdate() {
         ListGetDto newList = createList("testlist");
-        ListGetDto updatedList = updateList(newList.id, "newtitle");
-        assertEquals("newtitle", updatedList.title);
+        ListGetDto updatedList = updateList(newList.getId(), "newtitle");
+        assertEquals("newtitle", updatedList.getTitle());
     }
 }

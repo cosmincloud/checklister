@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     id("java")
@@ -13,6 +14,44 @@ repositories {
 
 group = "cloud.cosmin.checklister"
 version = "0.0.6-SNAPSHOT"
+
+val compileKotlin: KotlinCompile by tasks
+
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+
+val compileTestKotlin: KotlinCompile by tasks
+
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+
+val bootJar: BootJar by tasks
+
+bootJar.archiveName = "app.jar"
+
+sourceSets {
+    create("integrationTest") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+
+val integrationTestImplementation by configurations.getting {
+    extendsFrom(configurations.testImplementation.get())
+}
+
+configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+val integrationTest = task<Test>("integrationTest") {
+    description = "Runs integration tests."
+    group = "verification"
+
+    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
+    classpath = sourceSets["integrationTest"].runtimeClasspath
+    shouldRunAfter("test")
+}
 
 dependencies {
     // Spring Boot
@@ -47,19 +86,18 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-test-autoconfigure")
 
+    // JUnit 5
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+
+    // Support running JUnit 4 tests using JUnit 5
+    testCompileOnly("junit:junit:4.12")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.3.2")
+
+    // H2 in-memory database
+    testImplementation("com.h2database:h2:1.4.197")
+
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-java:3.13.0")
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-remote-driver:3.13.0")
     compile(kotlin("stdlib-jdk8"))
-}
-
-val compileKotlin: KotlinCompile by tasks
-
-compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
-}
-
-val compileTestKotlin: KotlinCompile by tasks
-
-compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
 }
