@@ -1,7 +1,10 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("java")
     id("com.gradle.build-scan") version "2.0.2"
     id("org.springframework.boot") version "2.1.1.RELEASE"
+    kotlin("jvm") version "1.3.11"
 }
 
 repositories {
@@ -46,4 +49,17 @@ dependencies {
 
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-java:3.13.0")
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-remote-driver:3.13.0")
+    compile(kotlin("stdlib-jdk8"))
+}
+
+val compileKotlin: KotlinCompile by tasks
+
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+
+val compileTestKotlin: KotlinCompile by tasks
+
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
 }
