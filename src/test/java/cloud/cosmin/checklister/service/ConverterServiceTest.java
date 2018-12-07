@@ -20,8 +20,8 @@ public class ConverterServiceTest {
         entity.setTitle("title");
 
         ListGetDto dto = svc.listDto(entity);
-        assertEquals(entity.getId(), dto.id);
-        assertEquals("title", dto.title);
+        assertEquals(entity.getId(), dto.getId());
+        assertEquals("title", dto.getTitle());
     }
 
     @Test
@@ -40,10 +40,10 @@ public class ConverterServiceTest {
         item.setRank(0);
 
         ItemGetDto itemDto = svc.itemDto(item);
-        assertEquals(item.getId(), itemDto.id);
-        assertEquals(list.getId(), itemDto.list);
-        assertEquals("content", itemDto.content);
-        assertEquals("text/plain", itemDto.contentType);
-        assertEquals(0, itemDto.rank);
+        assertEquals(item.getId(), itemDto.getId());
+        assertEquals(list.getId(), itemDto.getList());
+        assertEquals("content", itemDto.getContent());
+        assertEquals("text/plain", itemDto.getContentType());
+        assertEquals(0, itemDto.getRank());
     }
 }

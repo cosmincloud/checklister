@@ -53,8 +53,8 @@ public class ItemController {
         }
 
         ItemEntity item = optionalItem.get();
-        item.setContent(itemPost.content);
-        item.setContentType(itemPost.contentType);
+        item.setContent(itemPost.getContent());
+        item.setContentType(itemPost.getContentType());
 
         ItemEntity saved = itemRepo.save(item);
         ItemGetDto dto = converterService.itemDto(saved);

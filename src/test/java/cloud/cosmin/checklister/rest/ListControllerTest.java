@@ -45,9 +45,7 @@ public class ListControllerTest {
         savedEntity.setTitle("title");
         when(listRepo.save(any())).thenReturn(savedEntity);
 
-        ListPostDto listPostDto = new ListPostDto();
-        listPostDto.title = "title";
-        listPostDto.uuid = randomUUID;
+        ListPostDto listPostDto = new ListPostDto(randomUUID, "title");
         ResponseEntity<ListGetDto> response = controller.createList(listPostDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
@@ -89,9 +87,13 @@ public class ListControllerTest {
         entity.setList(listEntity);
         when(itemRepo.save(entity)).thenReturn(entity);
 
-        ItemPostDto itemPostDto = new ItemPostDto();
-        itemPostDto.content = "content";
-        itemPostDto.contentType = "contentType";
+        ItemPostDto itemPostDto = new ItemPostDto(
+                "content",
+                "contentType",
+                0
+        );
+        itemPostDto.setContent("content");
+        itemPostDto.setContentType("contentType");
 
         ResponseEntity<ItemGetDto> response = controller.createListItem(randomUUID, itemPostDto);
 

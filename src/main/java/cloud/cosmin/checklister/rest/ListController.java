@@ -55,12 +55,12 @@ public class ListController {
     @PostMapping(value = "/api/v1/list", consumes = "application/json")
     public ResponseEntity<ListGetDto> createList(@RequestBody ListPostDto listDto) {
         ListEntity newList = new ListEntity();
-        if(listDto.uuid != null) {
-            newList.setId(listDto.uuid);
+        if(listDto.getUuid() != null) {
+            newList.setId(listDto.getUuid());
         } else {
             newList.setId(UUID.randomUUID());
         }
-        newList.setTitle(listDto.title);
+        newList.setTitle(listDto.getTitle());
         ListEntity saved = listRepo.save(newList);
         return ResponseEntity
                 .created(URI.create("/api/v1/list/" + saved.getId()))
@@ -95,7 +95,7 @@ public class ListController {
         }
 
         ListEntity list = optionalList.get();
-        list.setTitle(listDto.title);
+        list.setTitle(listDto.getTitle());
 
         ListEntity saved = listRepo.save(list);
         ListGetDto dto = converterService.listDto(saved);
@@ -114,13 +114,15 @@ public class ListController {
         }
 
         ListEntity list = optionalList.get();
-        ListWithItemsDto dto = new ListWithItemsDto();
-        dto.id = list.getId();
-        dto.title = list.getTitle();
-        dto.items = new ArrayList<>();
+        ListWithItemsDto dto = new ListWithItemsDto(
+                list.getId(),
+                list.getTitle(),
+                new ArrayList<>()
+        );
+        dto.setItems(new ArrayList<>());
         for(ItemEntity item : list.getItems()) {
             ItemGetDto itemDto = converterService.itemDto(item);
-            dto.items.add(itemDto);
+            dto.getItems().add(itemDto);
         }
         return ResponseEntity.ok(dto);
     }
@@ -140,8 +142,8 @@ public class ListController {
         ListEntity list = optionalList.get();
 
         ItemEntity newItem = new ItemEntity();
-        newItem.setContent(itemDto.content);
-        newItem.setContentType(itemDto.contentType);
+        newItem.setContent(itemDto.getContent());
+        newItem.setContentType(itemDto.getContentType());
         newItem.setRank(list.getItems().size());
         newItem.setList(list);
 

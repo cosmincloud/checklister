@@ -9,19 +9,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConverterService {
     public ListGetDto listDto(ListEntity listEntity) {
-        ListGetDto dto = new ListGetDto();
-        dto.id = listEntity.getId();
-        dto.title = listEntity.getTitle();
-        return dto;
+        return new ListGetDto(
+                listEntity.getId(),
+                listEntity.getTitle()
+        );
     }
 
     public ItemGetDto itemDto(ItemEntity itemEntity) {
-        ItemGetDto dto = new ItemGetDto();
-        dto.id = itemEntity.getId();
-        dto.list = itemEntity.getList().getId();
-        dto.rank = itemEntity.getRank();
-        dto.content = itemEntity.getContent();
-        dto.contentType = itemEntity.getContentType();
-        return dto;
+        return new ItemGetDto(
+                itemEntity.getId(),
+                itemEntity.getList().getId(),
+                itemEntity.getContent(),
+                itemEntity.getContentType(),
+                itemEntity.getRank()
+        );
     }
 }
