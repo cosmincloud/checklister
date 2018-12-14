@@ -17,7 +17,7 @@ repositories {
 }
 
 group = "cloud.cosmin.checklister"
-version = "0.0.6"
+version = "0.0.7-SNAPSHOT"
 
 val compileKotlin: KotlinCompile by tasks
 
@@ -70,6 +70,10 @@ dependencies {
 
     // web
     compile("org.springframework.boot:spring-boot-starter-web")
+
+    // Swagger
+    compile("io.springfox:springfox-swagger2:2.9.2")
+    compile("io.springfox:springfox-swagger-ui:2.9.2")
 
     // database
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
