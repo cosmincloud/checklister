@@ -79,7 +79,7 @@ class ListControllerTest {
         val entity = ItemEntity()
         entity.content = "content"
         entity.contentType = "contentType"
-        entity.rank = 0
+        entity.rank = 2
         entity.list = listEntity
         Mockito.`when`(itemRepo!!.save(entity)).thenReturn(entity)
 

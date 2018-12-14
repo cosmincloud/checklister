@@ -1,6 +1,5 @@
 package cloud.cosmin.checklister.rest
 
-import cloud.cosmin.checklister.dao.ItemEntity
 import cloud.cosmin.checklister.dto.ItemGetDto
 import cloud.cosmin.checklister.dto.ItemPostDto
 import cloud.cosmin.checklister.repo.ItemRepo
@@ -8,46 +7,36 @@ import cloud.cosmin.checklister.service.ConverterService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-
-import java.util.Optional
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @Controller
-class ItemController {
-    @Autowired
-    private val itemRepo: ItemRepo? = null
-
-    @Autowired
-    private val converterService: ConverterService? = null
-
+class ItemController
+@Autowired
+constructor(
+        private val itemRepo: ItemRepo,
+        private val converterService: ConverterService
+) {
     @GetMapping("/api/v1/item/{itemId}")
     fun getListItem(@PathVariable itemId: UUID?): ResponseEntity<ItemGetDto> {
         if (itemId == null) {
             return ResponseEntity.badRequest().build()
         }
 
-        val optionalItem = itemRepo!!.findById(itemId)
+        val optionalItem = itemRepo.findById(itemId)
 
         if (!optionalItem.isPresent) {
             return ResponseEntity.notFound().build()
         }
 
-        val dto = converterService!!.itemDto(optionalItem.get())
+        val dto = converterService.itemDto(optionalItem.get())
         return ResponseEntity.ok(dto)
     }
 
     @PutMapping("/api/v1/item/{itemId}")
-    fun updateItem(@PathVariable itemId: UUID?,
+    fun updateItem(@PathVariable itemId: UUID,
                    @RequestBody itemPost: ItemPostDto): ResponseEntity<ItemGetDto> {
-        if (itemId == null) {
-            return ResponseEntity.badRequest().build()
-        }
-
-        val optionalItem = itemRepo!!.findById(itemId)
+        val optionalItem = itemRepo.findById(itemId)
         if (!optionalItem.isPresent) {
             return ResponseEntity.notFound().build()
         }
@@ -57,8 +46,36 @@ class ItemController {
         item.contentType = itemPost.contentType
 
         val saved = itemRepo.save(item)
-        val dto = converterService!!.itemDto(saved)
+        val dto = converterService.itemDto(saved)
         return ResponseEntity.ok(dto)
-
     }
+
+    @PostMapping("/api/v1/item/{itemId}/rank/up")
+    fun rankUp(@PathVariable itemId: UUID): ResponseEntity<ItemGetDto> {
+        val entity = itemRepo.rankUp(itemId)
+        val dto = converterService.itemDto(entity)
+        return ResponseEntity.ok(dto)
+    }
+
+    @PostMapping("/api/v1/item/{itemId}/rank/down")
+    fun rankDown(@PathVariable itemId: UUID): ResponseEntity<ItemGetDto> {
+        val entity = itemRepo.rankDown(itemId)
+        val dto = converterService.itemDto(entity)
+        return ResponseEntity.ok(dto)
+    }
+
+    @PostMapping("/api/v1/item/{itemId}/rank/top")
+    fun rankTop(@PathVariable itemId: UUID): ResponseEntity<ItemGetDto> {
+        val entity = itemRepo.rankTop(itemId)
+        val dto = converterService.itemDto(entity)
+        return ResponseEntity.ok(dto)
+    }
+
+    @PostMapping("/api/v1/item/{itemId}/rank/bottom")
+    fun rankBottom(@PathVariable itemId: UUID): ResponseEntity<ItemGetDto> {
+        val entity = itemRepo.rankBottom(itemId)
+        val dto = converterService.itemDto(entity)
+        return ResponseEntity.ok(dto)
+    }
+
 }

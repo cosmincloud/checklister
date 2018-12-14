@@ -17,6 +17,8 @@ services:
     build: .
     ports:
       - 8180:8080
+    depends_on:
+      - db
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/checklister
       SPRING_DATASOURCE_USERNAME: checklister

@@ -3,15 +3,9 @@ package cloud.cosmin.checklister.dao
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.persistence.Table
 import java.util.Objects
 import java.util.UUID
+import javax.persistence.*
 
 @Entity
 @Table(name = "list")
@@ -24,6 +18,7 @@ class ListEntity {
 
     @OneToMany(mappedBy = "list")
     @Fetch(FetchMode.JOIN)
+    @OrderBy("rank")
     var items: List<ItemEntity>? = null
 
     override fun equals(o: Any?): Boolean {

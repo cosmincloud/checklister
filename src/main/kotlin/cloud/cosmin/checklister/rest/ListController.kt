@@ -53,9 +53,10 @@ constructor(
         }
         newList.title = listDto.title
         val saved = listRepo.save(newList)
+        val dto = converterService.listDto(saved)
         return ResponseEntity
                 .created(URI.create("/api/v1/list/" + saved.id))
-                .build()
+                .body(dto)
     }
 
     @GetMapping("/api/v1/list/{listId}")
@@ -94,11 +95,7 @@ constructor(
     }
 
     @GetMapping("/api/v1/list/{listId}/item")
-    fun getListWithItems(@PathVariable listId: UUID?): ResponseEntity<ListWithItemsDto> {
-        if (listId == null) {
-            return ResponseEntity.badRequest().build()
-        }
-
+    fun getListWithItems(@PathVariable listId: UUID): ResponseEntity<ListWithItemsDto> {
         val optionalList = listRepo.findById(listId)
         if (!optionalList.isPresent) {
             return ResponseEntity.notFound().build()
@@ -135,7 +132,7 @@ constructor(
         val newItem = ItemEntity()
         newItem.content = itemDto.content
         newItem.contentType = itemDto.contentType
-        newItem.rank = list.items!!.size
+        newItem.rank = (list.items!!.size + 1) * 2
         newItem.list = list
 
         val savedItem = itemRepo.save(newItem)
