@@ -44,6 +44,6 @@ public class ConverterServiceTest {
         assertEquals(list.getId(), itemDto.getList());
         assertEquals("content", itemDto.getContent());
         assertEquals("text/plain", itemDto.getContentType());
-        assertEquals(0, itemDto.getRank());
+        assertEquals(Integer.valueOf(0), itemDto.getRank());
     }
 }
