@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
+import io.swagger.v3.plugins.gradle.tasks.ResolveTask.Format.JSON
 
 plugins {
     id("java")
@@ -10,6 +11,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.spring") version "1.3.11"
     // https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support
     id("org.jetbrains.kotlin.plugin.jpa") version "1.3.11"
+    // https://github.com/swagger-api/swagger-core/tree/master/modules/swagger-gradle-plugin
+    id("io.swagger.core.v3.swagger-gradle-plugin") version "2.0.6"
 }
 
 repositories {
@@ -17,7 +20,7 @@ repositories {
 }
 
 group = "cloud.cosmin.checklister"
-version = "0.0.7-SNAPSHOT"
+version = "0.0.7"
 
 val compileKotlin: KotlinCompile by tasks
 
@@ -31,9 +34,19 @@ compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 
+// fixed name for boot JAR (referenced in Dockerfile)
 val bootJar: BootJar by tasks
-
 bootJar.archiveName = "app.jar"
+
+// Customize JAR manifest to surface project version in app
+tasks.jar {
+    manifest {
+        attributes(
+                "Implementation-Title" to "Checklister",
+                "Implementation-Version" to version
+        )
+    }
+}
 
 sourceSets {
     create("integrationTest") {
@@ -59,6 +72,15 @@ val integrationTest = task<Test>("integrationTest") {
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
     shouldRunAfter("test")
+}
+
+tasks.resolve {
+    outputFileName = "PetStoreAPI"
+    outputFormat = JSON
+    prettyPrint = true
+    classpath = sourceSets["main"].runtimeClasspath
+    resourcePackages = setOf("io.test")
+    outputPath = "test"
 }
 
 dependencies {
