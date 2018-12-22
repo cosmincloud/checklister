@@ -38,16 +38,6 @@ compileTestKotlin.kotlinOptions {
 val bootJar: BootJar by tasks
 bootJar.archiveName = "app.jar"
 
-// Customize JAR manifest to surface project version in app
-tasks.jar {
-    manifest {
-        attributes(
-                "Implementation-Title" to "Checklister",
-                "Implementation-Version" to version
-        )
-    }
-}
-
 sourceSets {
     create("integrationTest") {
         compileClasspath += sourceSets.main.get().output
@@ -137,4 +127,6 @@ dependencies {
 
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-java:3.13.0")
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-remote-driver:3.13.0")
+
+    implementation(project("modules:buildconfig"))
 }

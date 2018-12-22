@@ -7,6 +7,7 @@ import cloud.cosmin.checklister.dto.ListPostDto
 import cloud.cosmin.checklister.repo.ItemRepo
 import cloud.cosmin.checklister.repo.ListRepo
 import cloud.cosmin.checklister.service.ConverterService
+import cloud.cosmin.checklister.service.UuidService
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -22,29 +23,33 @@ class ListControllerTest {
     private val itemRepo: ItemRepo? = null
     @Mock
     private val converterService: ConverterService? = null
+    @Mock
+    private val uuidService: UuidService? = null
     @InjectMocks
     private val controller: ListController? = null
+
+    private val uuid: UUID = UUID.randomUUID()
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        Mockito.`when`(uuidService!!.get()).thenReturn(uuid)
     }
 
     @Test
     @Throws(Exception::class)
     fun testCreate() {
-        val randomUUID = UUID.randomUUID()
         val savedEntity = ListEntity()
-        savedEntity.id = randomUUID
+        savedEntity.id = uuid
         savedEntity.title = "title"
         Mockito.`when`(listRepo!!.save<ListEntity>(ArgumentMatchers.any())).thenReturn(savedEntity)
 
-        val listPostDto = ListPostDto(randomUUID, "title")
+        val listPostDto = ListPostDto("title")
         val response = controller!!.createList(listPostDto)
         assertEquals(HttpStatus.CREATED, response.statusCode)
 
         val entity = ListEntity()
-        entity.id = randomUUID
+        entity.id = uuid
         entity.title = "title"
         verify(listRepo).save(entity)
     }

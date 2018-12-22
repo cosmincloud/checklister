@@ -21,8 +21,7 @@ data class ListGetDto(
 )
 
 data class ListPostDto(
-    @JsonProperty var uuid: UUID?,
-    @JsonProperty var title: String?
+    @JsonProperty var title: String
 )
 
 data class ListWithItemsDto(

@@ -2,55 +2,44 @@ package cloud.cosmin.checklister.rest
 
 import cloud.cosmin.checklister.dao.ItemEntity
 import cloud.cosmin.checklister.dao.ListEntity
-import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.dto.ItemPostDto
-import cloud.cosmin.checklister.dto.ListGetDto
-import cloud.cosmin.checklister.dto.ListPostDto
-import cloud.cosmin.checklister.dto.ListWithItemsDto
+import cloud.cosmin.checklister.dto.*
 import cloud.cosmin.checklister.repo.ItemRepo
 import cloud.cosmin.checklister.repo.ListRepo
 import cloud.cosmin.checklister.service.ConverterService
+import cloud.cosmin.checklister.service.UuidService
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
-
+import org.springframework.web.bind.annotation.*
 import java.net.URI
-import java.util.ArrayList
-import java.util.Optional
-import java.util.UUID
+import java.util.*
 
 @RestController
+@Api(description = "Operations on lists", tags = arrayOf("list"))
 class ListController @Autowired
 constructor(
         private val listRepo: ListRepo,
         private val itemRepo: ItemRepo,
-        private val converterService: ConverterService
+        private val converterService: ConverterService,
+        private val uuidService: UuidService
 ) {
-
-    val allLists: ResponseEntity<List<ListGetDto>>
-        @GetMapping("/api/v1/list")
-        get() {
-            val lists = ArrayList<ListGetDto>()
-            for (list in listRepo.findAll()) {
-                val dto = converterService.listDto(list)
-                lists.add(dto)
-            }
-            return ResponseEntity.ok(lists)
+    @GetMapping("/api/v1/list")
+    @ApiOperation("Retrieve all lists")
+    fun allLists(): ResponseEntity<List<ListGetDto>> {
+        val lists = ArrayList<ListGetDto>()
+        for (list in listRepo.findAll()) {
+            val dto = converterService.listDto(list)
+            lists.add(dto)
         }
+        return ResponseEntity.ok(lists)
+    }
 
     @PostMapping(value = arrayOf("/api/v1/list"), consumes = arrayOf("application/json"))
+    @ApiOperation("Create a new list")
     fun createList(@RequestBody listDto: ListPostDto): ResponseEntity<ListGetDto> {
         val newList = ListEntity()
-        if (listDto.uuid != null) {
-            newList.id = listDto.uuid
-        } else {
-            newList.id = UUID.randomUUID()
-        }
+        newList.id = uuidService.get()
         newList.title = listDto.title
         val saved = listRepo.save(newList)
         val dto = converterService.listDto(saved)
@@ -60,6 +49,7 @@ constructor(
     }
 
     @GetMapping("/api/v1/list/{listId}")
+    @ApiOperation("Retrieve a single list")
     fun getList(@PathVariable listId: UUID?): ResponseEntity<ListGetDto> {
         if (listId == null) {
             return ResponseEntity.badRequest().build()
@@ -95,6 +85,7 @@ constructor(
     }
 
     @GetMapping("/api/v1/list/{listId}/item")
+    @ApiOperation("Retrieve all items in a list")
     fun getListWithItems(@PathVariable listId: UUID): ResponseEntity<ListWithItemsDto> {
         val optionalList = listRepo.findById(listId)
         if (!optionalList.isPresent) {
@@ -116,6 +107,7 @@ constructor(
     }
 
     @PostMapping("/api/v1/list/{listId}/item")
+    @ApiOperation("Add an item to the list")
     fun createListItem(@PathVariable listId: UUID?,
                        @RequestBody itemDto: ItemPostDto): ResponseEntity<ItemGetDto> {
         if (listId == null) {
@@ -145,6 +137,7 @@ constructor(
 
     // TODO: Add endpoint for direct item access (/api/v1/item/{itemId}) ?
     @GetMapping("/api/v1/list/{listId}/item/{itemId}")
+    @ApiOperation("Retrieve a single item from a list")
     fun getListItem(@PathVariable listId: UUID?,
                     @PathVariable itemId: UUID?): ResponseEntity<ItemGetDto> {
         if (listId == null || itemId == null) {
