@@ -2,9 +2,7 @@ package cloud.cosmin.checklister.dao
 
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
-
-import java.util.Objects
-import java.util.UUID
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -14,7 +12,7 @@ class ListEntity {
     var id: UUID? = null
 
     @Column(nullable = false)
-    var title: String? = null
+    var title: String = ""
 
     @OneToMany(mappedBy = "list")
     @Fetch(FetchMode.JOIN)

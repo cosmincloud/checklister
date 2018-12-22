@@ -4,6 +4,7 @@ import cloud.cosmin.checklister.dto.ItemGetDto
 import cloud.cosmin.checklister.dto.ItemPostDto
 import cloud.cosmin.checklister.repo.ItemRepo
 import cloud.cosmin.checklister.service.ConverterService
+import io.swagger.annotations.Api
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @Controller
+@Api(description = "Operations on list items", tags = arrayOf("item"))
 class ItemController
 @Autowired
 constructor(
