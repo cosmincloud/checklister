@@ -5,7 +5,6 @@ import cloud.cosmin.checklister.dto.ItemPostDto
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import java.util.*
 
 class ListCreationIT : BaseIT() {
     @Test
@@ -27,13 +26,6 @@ class ListCreationIT : BaseIT() {
         val newItem = template.getForObject(newItemUriString, ItemGetDto::class.java)
         assertEquals("testcontent", newItem!!.content)
         assertEquals("text/plain", newItem.contentType)
-        assertEquals(0, newItem.rank)
-    }
-
-    @Test
-    fun listCreationWithId() {
-        val uuid = UUID.randomUUID()
-        val (id) = createList(uuid, "title")
-        assertEquals(uuid, id)
+        assertEquals(2, newItem.rank)
     }
 }

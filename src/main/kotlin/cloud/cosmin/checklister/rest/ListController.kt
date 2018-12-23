@@ -160,4 +160,25 @@ constructor(
         val dto = converterService.itemDto(optionalItem.get())
         return ResponseEntity.ok(dto)
     }
+
+    @PostMapping("/api/v1/list/{listId}/item/{itemId}")
+    fun moveListItem(@PathVariable listId: UUID,
+                    @PathVariable itemId: UUID): ResponseEntity<ItemGetDto> {
+        val optionalList = listRepo.findById(listId)
+        if (!optionalList.isPresent) {
+            return ResponseEntity.notFound().build()
+        }
+
+        val optionalItem = itemRepo.findById(itemId)
+        if (!optionalItem.isPresent) {
+            return ResponseEntity.notFound().build()
+        }
+
+        val item = optionalItem.get()
+        item.list = optionalList.get()
+
+        val savedItem = itemRepo.save(item)
+        val savedDto = converterService.itemDto(savedItem)
+        return ResponseEntity.ok(savedDto)
+    }
 }

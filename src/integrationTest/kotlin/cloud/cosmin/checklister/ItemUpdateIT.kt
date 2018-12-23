@@ -17,7 +17,7 @@ class ItemUpdateIT : BaseIT() {
             assertNotNull(itemAdded)
             assertEquals("content", itemAdded.content)
             assertEquals("text/plain", itemAdded.contentType)
-            assertEquals(0, itemAdded.rank)
+            assertEquals(2, itemAdded.rank)
             itemId = itemAdded.id
         }
         run {
@@ -27,13 +27,13 @@ class ItemUpdateIT : BaseIT() {
             assertNotNull(itemAdded)
             assertEquals("content1", itemAdded.content)
             assertEquals("application/json", itemAdded.contentType)
-            assertEquals(1, itemAdded.rank)
+            assertEquals(4, itemAdded.rank)
         }
         run {
             val (_, _, content, contentType, rank) = getItem(itemId!!)
             assertEquals("content", content)
             assertEquals("text/plain", contentType)
-            assertEquals(0, rank)
+            assertEquals(2, rank)
         }
     }
 }

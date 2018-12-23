@@ -6,14 +6,9 @@ import cloud.cosmin.checklister.dto.ItemGetDto
 import cloud.cosmin.checklister.dto.ItemPostDto
 import cloud.cosmin.checklister.dto.ListGetDto
 import cloud.cosmin.checklister.dto.ListPostDto
-import org.junit.Before
-import org.springframework.web.client.RestTemplate
-
-import java.io.IOException
-import java.util.UUID
-
 import org.junit.Assert.assertNotNull
-import java.lang.IllegalStateException
+import org.springframework.web.client.RestTemplate
+import java.util.*
 
 open class BaseIT {
     protected val service: Service = ServiceDiscovery.getService("checklister")
@@ -32,15 +27,7 @@ open class BaseIT {
     }
 
     protected fun createList(title: String): ListGetDto {
-        val post = ListPostDto(null, title)
-        val newListUri = template.postForLocation(getListUrl(service), post, ListGetDto::class.java)
-        assertNotNull(newListUri)
-
-        return template.getForObject(service.http + newListUri!!.toString(), ListGetDto::class.java)!!
-    }
-
-    protected fun createList(uuid: UUID, title: String): ListGetDto {
-        val post = ListPostDto(uuid, title)
+        val post = ListPostDto(title)
         val newListUri = template.postForLocation(getListUrl(service), post, ListGetDto::class.java)
         assertNotNull(newListUri)
 
@@ -48,7 +35,7 @@ open class BaseIT {
     }
 
     protected fun updateList(id: UUID, title: String): ListGetDto {
-        val post = ListPostDto(null, title)
+        val post = ListPostDto(title)
         val listUri = getListUrl(service) + "/" + id.toString()
         template.put(listUri, post)
 
@@ -63,5 +50,10 @@ open class BaseIT {
     protected fun getItem(itemId: UUID): ItemGetDto {
         val url = getItemUrl(itemId)
         return template.getForObject(url, ItemGetDto::class.java)!!
+    }
+
+    protected fun moveItem(listId: UUID, itemId: UUID): ItemGetDto? {
+        val url = "${getListUrl(service)}/${listId.toString()}/item/${itemId}"
+        return template.postForObject(url, null, ItemGetDto::class.java)
     }
 }
