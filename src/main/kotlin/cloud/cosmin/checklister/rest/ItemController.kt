@@ -19,8 +19,7 @@ class ItemController
 @Autowired
 constructor(
         private val itemRepo: ItemRepo,
-        private val converterService: ConverterService,
-        private val objectMapper: ObjectMapper
+        private val converterService: ConverterService
 ) {
     @GetMapping("/api/v1/item/{itemId}")
     @ApiOperation("Retrieve an item")
