@@ -10,7 +10,7 @@ class ItemUpdateIT : BaseIT() {
     @Test
     fun itemUpdate() {
         val (id) = createList("testlist")
-        val itemPost = ItemPostDto("content", "text/plain", null)
+        val itemPost = ItemPostDto("content", "text/plain")
         val itemId: UUID?
         run {
             val itemAdded = addItem(id!!, itemPost)

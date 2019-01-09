@@ -90,8 +90,7 @@ class ListControllerTest {
 
         val itemPostDto = ItemPostDto(
                 "content",
-                "contentType",
-                0
+                "contentType"
         )
         itemPostDto.content = "content"
         itemPostDto.contentType = "contentType"

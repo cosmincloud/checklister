@@ -11,8 +11,13 @@ data class ItemGetDto(var id: UUID?,
 
 data class ItemPostDto(
         @JsonProperty var content: String?,
-        @JsonProperty var contentType: String?,
-        @JsonProperty var rank: Int?
+        @JsonProperty var contentType: String?
+)
+
+data class ItemUpdateDto(
+        @JsonProperty var id: UUID,
+        @JsonProperty var content: String?,
+        @JsonProperty var contentType: String?
 )
 
 data class ListGetDto(

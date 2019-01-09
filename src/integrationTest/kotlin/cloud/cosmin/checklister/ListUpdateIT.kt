@@ -17,7 +17,7 @@ class ListUpdateIT : BaseIT() {
     @Test
     fun moveListItem() {
         val (id) = createList("testlist")
-        val itemPost = ItemPostDto("content", "text/plain", null)
+        val itemPost = ItemPostDto("content", "text/plain")
         val (itemId) = addItem(id!!, itemPost)
 
         val (id2) = createList("list2")
