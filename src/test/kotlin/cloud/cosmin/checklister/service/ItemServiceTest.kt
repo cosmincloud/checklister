@@ -17,6 +17,8 @@ internal class ItemServiceTest {
     fun testGet() {
         val itemRepo = mock(ItemRepo::class.java)
         val converterService = mock(ConverterService::class.java)
+        val eventService = mock(ItemEventService::class.java)
+
         val id = UUID.randomUUID()
         val entity = mock(ItemEntity::class.java)
         val dto = ItemGetDto(null, null, null, null, null)
@@ -24,7 +26,7 @@ internal class ItemServiceTest {
         `when`(itemRepo.findById(id)).thenReturn(Optional.of(entity))
         `when`(converterService.itemDto(entity)).thenReturn(dto)
 
-        val itemService = ItemService(itemRepo, converterService)
+        val itemService = ItemService(itemRepo, converterService, eventService)
         val returned = itemService.findById(id).get()
         assertEquals(dto, returned)
 
@@ -36,11 +38,12 @@ internal class ItemServiceTest {
     fun testGetNotFound() {
         val itemRepo = mock(ItemRepo::class.java)
         val converterService = mock(ConverterService::class.java)
+        val eventService = mock(ItemEventService::class.java)
         val id = UUID.randomUUID()
 
         `when`(itemRepo.findById(id)).thenReturn(Optional.empty())
 
-        val itemService = ItemService(itemRepo, converterService)
+        val itemService = ItemService(itemRepo, converterService, eventService)
         val returned = itemService.findById(id)
         assertTrue(returned.isEmpty)
 
@@ -52,6 +55,8 @@ internal class ItemServiceTest {
     fun testUpdate() {
         val itemRepo = mock(ItemRepo::class.java)
         val converterService = mock(ConverterService::class.java)
+        val eventService = mock(ItemEventService::class.java)
+
         val id = UUID.randomUUID()
 
         val entity = ItemEntity()
@@ -67,7 +72,7 @@ internal class ItemServiceTest {
 
         val itemUpdateDto = ItemUpdateDto(id, "content", "contentType")
 
-        val itemService = ItemService(itemRepo, converterService)
+        val itemService = ItemService(itemRepo, converterService, eventService)
         val returned = itemService.update(itemUpdateDto).get()
 
         assertEquals(dto, returned)
@@ -77,6 +82,8 @@ internal class ItemServiceTest {
     fun testRankUp() {
         val itemRepo = mock(ItemRepo::class.java)
         val converterService = mock(ConverterService::class.java)
+        val eventService = mock(ItemEventService::class.java)
+
         val id = UUID.randomUUID()
 
         val entity = ItemEntity()
@@ -89,7 +96,7 @@ internal class ItemServiceTest {
         `when`(itemRepo.rankUp(id)).thenReturn(entity)
         `when`(converterService.itemDto(entity)).thenReturn(dto)
 
-        val itemService = ItemService(itemRepo, converterService)
+        val itemService = ItemService(itemRepo, converterService, eventService)
         val returned = itemService.rank(id, RankOperation.UP)
 
         assertEquals(dto, returned)
@@ -99,6 +106,8 @@ internal class ItemServiceTest {
     fun testRankDown() {
         val itemRepo = mock(ItemRepo::class.java)
         val converterService = mock(ConverterService::class.java)
+        val eventService = mock(ItemEventService::class.java)
+
         val id = UUID.randomUUID()
 
         val entity = ItemEntity()
@@ -111,7 +120,7 @@ internal class ItemServiceTest {
         `when`(itemRepo.rankDown(id)).thenReturn(entity)
         `when`(converterService.itemDto(entity)).thenReturn(dto)
 
-        val itemService = ItemService(itemRepo, converterService)
+        val itemService = ItemService(itemRepo, converterService, eventService)
         val returned = itemService.rank(id, RankOperation.DOWN)
 
         assertEquals(dto, returned)
@@ -121,6 +130,8 @@ internal class ItemServiceTest {
     fun testRankTop() {
         val itemRepo = mock(ItemRepo::class.java)
         val converterService = mock(ConverterService::class.java)
+        val eventService = mock(ItemEventService::class.java)
+
         val id = UUID.randomUUID()
 
         val entity = ItemEntity()
@@ -133,7 +144,7 @@ internal class ItemServiceTest {
         `when`(itemRepo.rankTop(id)).thenReturn(entity)
         `when`(converterService.itemDto(entity)).thenReturn(dto)
 
-        val itemService = ItemService(itemRepo, converterService)
+        val itemService = ItemService(itemRepo, converterService, eventService)
         val returned = itemService.rank(id, RankOperation.TOP)
 
         assertEquals(dto, returned)
@@ -143,6 +154,8 @@ internal class ItemServiceTest {
     fun testRankBottom() {
         val itemRepo = mock(ItemRepo::class.java)
         val converterService = mock(ConverterService::class.java)
+        val eventService = mock(ItemEventService::class.java)
+
         val id = UUID.randomUUID()
 
         val entity = ItemEntity()
@@ -155,9 +168,60 @@ internal class ItemServiceTest {
         `when`(itemRepo.rankBottom(id)).thenReturn(entity)
         `when`(converterService.itemDto(entity)).thenReturn(dto)
 
-        val itemService = ItemService(itemRepo, converterService)
+        val itemService = ItemService(itemRepo, converterService, eventService)
         val returned = itemService.rank(id, RankOperation.BOTTOM)
 
         assertEquals(dto, returned)
+    }
+
+    @Test @DisplayName("should emit an update event")
+    fun testUpdateEvent() {
+        val itemRepo = mock(ItemRepo::class.java)
+        val converterService = mock(ConverterService::class.java)
+        val eventService = mock(ItemEventService::class.java)
+
+        val id = UUID.randomUUID()
+
+        val entity = ItemEntity()
+        entity.id = id
+        entity.content = "dbContent"
+        entity.contentType = "dbContentType"
+
+        val dto = ItemGetDto(id, null, "content", "contentType", null)
+
+        `when`(itemRepo.findById(id)).thenReturn(Optional.of(entity))
+        `when`(itemRepo.save(entity)).thenReturn(entity)
+        `when`(converterService.itemDto(entity)).thenReturn(dto)
+
+        val itemUpdateDto = ItemUpdateDto(id, "content", "contentType")
+
+        val itemService = ItemService(itemRepo, converterService, eventService)
+        itemService.update(itemUpdateDto).get()
+
+        verify(eventService).update(itemUpdateDto)
+    }
+
+    @Test @DisplayName("should emit a rank event")
+    fun testRankEvent() {
+        val itemRepo = mock(ItemRepo::class.java)
+        val converterService = mock(ConverterService::class.java)
+        val eventService = mock(ItemEventService::class.java)
+
+        val id = UUID.randomUUID()
+
+        val entity = ItemEntity()
+        entity.id = id
+        entity.content = "dbContent"
+        entity.contentType = "dbContentType"
+
+        val dto = ItemGetDto(id, null, null, null, null)
+
+        `when`(itemRepo.rankTop(id)).thenReturn(entity)
+        `when`(converterService.itemDto(entity)).thenReturn(dto)
+
+        val itemService = ItemService(itemRepo, converterService, eventService)
+        itemService.rank(id, RankOperation.TOP)
+
+        verify(eventService).rank(id, RankOperation.TOP)
     }
 }
