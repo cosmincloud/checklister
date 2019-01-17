@@ -8,13 +8,14 @@ import java.util.*
  * Converts item actions into events.
  */
 @Service
-class ItemEventService(val eventSink: EventSink) : ItemEvents {
+class ItemEventService(private val eventSink: EventSink) : ItemEvents {
     override fun update(dto: ItemUpdateDto) {
-        val event = Event()
+        val event = ItemUpdateEvent(dto)
         eventSink.accept(event)
     }
 
     override fun rank(id: UUID, op: RankOperation) {
-        TODO("not implemented")
+        val event = ItemRankEvent(id, op)
+        eventSink.accept(event)
     }
 }
