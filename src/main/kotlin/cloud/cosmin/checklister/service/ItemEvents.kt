@@ -1,6 +1,5 @@
 package cloud.cosmin.checklister.service
 
-import cloud.cosmin.checklister.dto.ItemGetDto
 import cloud.cosmin.checklister.dto.ItemUpdateDto
 import java.util.*
 
