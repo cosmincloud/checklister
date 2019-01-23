@@ -41,12 +41,12 @@ constructor(private val itemService: ItemService) {
     @PutMapping("/api/v1/item/{itemId}")
     @ApiOperation("Update an item")
     fun updateItem(@PathVariable itemId: UUID,
-                   @RequestBody dto: ItemUpdateDto): ResponseEntity<ItemGetDto> {
-        val updated = itemService.update(dto)
-        if(updated.isPresent) {
-            return ResponseEntity.ok(updated.get())
+                   @RequestBody dto: ItemPostDto): ResponseEntity<ItemGetDto> {
+        val updated = itemService.update(itemId, dto)
+        return if(updated.isPresent) {
+            ResponseEntity.ok(updated.get())
         } else {
-            return ResponseEntity.notFound().build()
+            ResponseEntity.notFound().build()
         }
     }
 

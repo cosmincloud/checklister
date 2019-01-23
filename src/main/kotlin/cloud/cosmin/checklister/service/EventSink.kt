@@ -1,5 +1,6 @@
 package cloud.cosmin.checklister.service
 
 interface EventSink {
-    fun accept(event: ItemEvent)
+    fun accept(event: ItemUpdateEvent)
+    fun accept(event: ItemRankEvent)
 }

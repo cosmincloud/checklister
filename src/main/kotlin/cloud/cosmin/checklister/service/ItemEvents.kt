@@ -1,12 +1,12 @@
 package cloud.cosmin.checklister.service
 
-import cloud.cosmin.checklister.dto.ItemUpdateDto
+import cloud.cosmin.checklister.dto.ItemPostDto
 import java.util.*
 
 /**
  * Actions on items that can be audited.
  */
 interface ItemEvents {
-    fun update(dto: ItemUpdateDto): Unit
-    fun rank(id: UUID, op: RankOperation): Unit
+    fun update(id: UUID, dto: ItemPostDto): Unit
+    fun rank(id: UUID, op: RankOperation, newRank: Int): Unit
 }

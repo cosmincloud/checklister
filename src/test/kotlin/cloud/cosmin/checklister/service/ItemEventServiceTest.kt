@@ -1,6 +1,6 @@
 package cloud.cosmin.checklister.service
 
-import cloud.cosmin.checklister.dto.ItemUpdateDto
+import cloud.cosmin.checklister.dto.ItemPostDto
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -15,10 +15,11 @@ internal class ItemEventServiceTest {
         val eventSink = mock(EventSink::class.java)
         val service = ItemEventService(eventSink)
 
-        val itemUpdateDto = ItemUpdateDto(UUID.randomUUID(), "content", "contentType")
-        service.update(itemUpdateDto)
+        val id = UUID.randomUUID()
+        val itemUpdateDto = ItemPostDto("content", "contentType")
+        service.update(id, itemUpdateDto)
 
-        val event = ItemUpdateEvent(itemUpdateDto)
+        val event = ItemUpdateEvent(ItemEventType.UPDATE, id, itemUpdateDto)
         verify(eventSink).accept(event)
     }
 
@@ -29,9 +30,9 @@ internal class ItemEventServiceTest {
         val service = ItemEventService(eventSink)
 
         val id = UUID.randomUUID()
-        service.rank(id, RankOperation.UP)
+        service.rank(id, RankOperation.UP, 1)
 
-        val event = ItemRankEvent(id, RankOperation.UP)
+        val event = ItemRankEvent(ItemEventType.RANK, id, RankOperation.UP, 1)
         verify(eventSink).accept(event)
     }
 
@@ -42,9 +43,9 @@ internal class ItemEventServiceTest {
         val service = ItemEventService(eventSink)
 
         val id = UUID.randomUUID()
-        service.rank(id, RankOperation.DOWN)
+        service.rank(id, RankOperation.DOWN, 1)
 
-        val event = ItemRankEvent(id, RankOperation.DOWN)
+        val event = ItemRankEvent(ItemEventType.RANK, id, RankOperation.DOWN, 1)
         verify(eventSink).accept(event)
     }
 
@@ -55,9 +56,9 @@ internal class ItemEventServiceTest {
         val service = ItemEventService(eventSink)
 
         val id = UUID.randomUUID()
-        service.rank(id, RankOperation.TOP)
+        service.rank(id, RankOperation.TOP, 1)
 
-        val event = ItemRankEvent(id, RankOperation.TOP)
+        val event = ItemRankEvent(ItemEventType.RANK, id, RankOperation.TOP, 1)
         verify(eventSink).accept(event)
     }
 
@@ -68,9 +69,9 @@ internal class ItemEventServiceTest {
         val service = ItemEventService(eventSink)
 
         val id = UUID.randomUUID()
-        service.rank(id, RankOperation.BOTTOM)
+        service.rank(id, RankOperation.BOTTOM, 1)
 
-        val event = ItemRankEvent(id, RankOperation.BOTTOM)
+        val event = ItemRankEvent(ItemEventType.RANK, id, RankOperation.BOTTOM, 1)
         verify(eventSink).accept(event)
     }
 }

@@ -2,7 +2,7 @@ package cloud.cosmin.checklister.service
 
 import cloud.cosmin.checklister.dao.ItemEntity
 import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.dto.ItemUpdateDto
+import cloud.cosmin.checklister.dto.ItemPostDto
 import cloud.cosmin.checklister.repo.ItemRepo
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -70,10 +70,10 @@ internal class ItemServiceTest {
         `when`(itemRepo.save(entity)).thenReturn(entity)
         `when`(converterService.itemDto(entity)).thenReturn(dto)
 
-        val itemUpdateDto = ItemUpdateDto(id, "content", "contentType")
+        val itemUpdateDto = ItemPostDto("content", "contentType")
 
         val itemService = ItemService(itemRepo, converterService, eventService)
-        val returned = itemService.update(itemUpdateDto).get()
+        val returned = itemService.update(id, itemUpdateDto).get()
 
         assertEquals(dto, returned)
     }
@@ -193,12 +193,12 @@ internal class ItemServiceTest {
         `when`(itemRepo.save(entity)).thenReturn(entity)
         `when`(converterService.itemDto(entity)).thenReturn(dto)
 
-        val itemUpdateDto = ItemUpdateDto(id, "content", "contentType")
+        val itemUpdateDto = ItemPostDto("content", "contentType")
 
         val itemService = ItemService(itemRepo, converterService, eventService)
-        itemService.update(itemUpdateDto).get()
+        itemService.update(id, itemUpdateDto).get()
 
-        verify(eventService).update(itemUpdateDto)
+        verify(eventService).update(id, itemUpdateDto)
     }
 
     @Test @DisplayName("should emit a rank event")
@@ -213,6 +213,7 @@ internal class ItemServiceTest {
         entity.id = id
         entity.content = "dbContent"
         entity.contentType = "dbContentType"
+        entity.rank = 1
 
         val dto = ItemGetDto(id, null, null, null, null)
 
@@ -222,6 +223,6 @@ internal class ItemServiceTest {
         val itemService = ItemService(itemRepo, converterService, eventService)
         itemService.rank(id, RankOperation.TOP)
 
-        verify(eventService).rank(id, RankOperation.TOP)
+        verify(eventService).rank(id, RankOperation.TOP, 1)
     }
 }

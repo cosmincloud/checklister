@@ -2,7 +2,7 @@ package cloud.cosmin.checklister.service
 
 import cloud.cosmin.checklister.dao.ItemEntity
 import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.dto.ItemUpdateDto
+import cloud.cosmin.checklister.dto.ItemPostDto
 import cloud.cosmin.checklister.repo.ItemRepo
 import org.springframework.stereotype.Service
 import java.util.*
@@ -16,8 +16,8 @@ class ItemService(val itemRepo: ItemRepo,
                 .map({ converterService.itemDto(it) })
     }
 
-    fun update(dto: ItemUpdateDto): Optional<ItemGetDto> {
-        val optionalItem = itemRepo.findById(dto.id)
+    fun update(id: UUID, dto: ItemPostDto): Optional<ItemGetDto> {
+        val optionalItem = itemRepo.findById(id)
         if (!optionalItem.isPresent) {
             return Optional.empty()
         }
@@ -27,7 +27,7 @@ class ItemService(val itemRepo: ItemRepo,
         item.contentType = dto.contentType
 
         val saved = itemRepo.save(item)
-        itemEventService.update(dto)
+        itemEventService.update(id, dto)
         return Optional.of(converterService.itemDto(saved))
     }
 
@@ -39,7 +39,7 @@ class ItemService(val itemRepo: ItemRepo,
             RankOperation.BOTTOM -> itemRepo.rankBottom(id)
         }
 
-        itemEventService.rank(id, op)
+        itemEventService.rank(id, op, entity.rank)
         return converterService.itemDto(entity)
     }
 }
