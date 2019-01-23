@@ -73,6 +73,16 @@ tasks.resolve {
     outputPath = "test"
 }
 
+val generateBuildConfigResourceTask by tasks.registering {
+    File("src/main/resources/checklister-build.properties")
+            .printWriter().use { out ->
+                out.println("version=${project.version.toString()}")
+            }
+}
+
+val compileKotlinTask = tasks.named("compileKotlin").get()
+compileKotlinTask.dependsOn(generateBuildConfigResourceTask)
+
 dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
@@ -130,6 +140,4 @@ dependencies {
 
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-java:3.13.0")
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-remote-driver:3.13.0")
-
-    implementation(project("modules:buildconfig"))
 }

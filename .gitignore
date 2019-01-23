@@ -28,3 +28,5 @@
 /.nb-gradle/
 
 /.data/
+
+src/main/resources/checklister-build.properties
