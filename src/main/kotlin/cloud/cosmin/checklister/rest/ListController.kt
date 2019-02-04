@@ -106,35 +106,6 @@ constructor(
         return ResponseEntity.ok(dto)
     }
 
-    @PostMapping("/api/v1/list/{listId}/item")
-    @ApiOperation("Add an item to the list")
-    fun createListItem(@PathVariable listId: UUID?,
-                       @RequestBody itemDto: ItemPostDto): ResponseEntity<ItemGetDto> {
-        if (listId == null) {
-            return ResponseEntity.badRequest().build()
-        }
-
-        val optionalList = listRepo.findById(listId)
-        if (!optionalList.isPresent) {
-            return ResponseEntity.notFound().build()
-        }
-
-        val list = optionalList.get()
-
-        val newItem = ItemEntity()
-        newItem.content = itemDto.content
-        newItem.contentType = itemDto.contentType
-        newItem.rank = (list.items!!.size + 1) * 2
-        newItem.list = list
-
-        val savedItem = itemRepo.save(newItem)
-        val dto = converterService.itemDto(savedItem)
-
-        return ResponseEntity
-                .created(URI.create("/api/v1/list/" + listId.toString() + "/item/" + savedItem.id))
-                .body(dto)
-    }
-
     // TODO: Add endpoint for direct item access (/api/v1/item/{itemId}) ?
     @GetMapping("/api/v1/list/{listId}/item/{itemId}")
     @ApiOperation("Retrieve a single item from a list")

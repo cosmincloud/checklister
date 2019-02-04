@@ -1,6 +1,7 @@
 package cloud.cosmin.checklister.service
 
-import cloud.cosmin.checklister.dto.ItemPostDto
+import cloud.cosmin.checklister.dto.ItemGetDto
+import cloud.cosmin.checklister.service.event.EventSink
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -9,13 +10,18 @@ import java.util.*
  */
 @Service
 class ItemEventService(private val eventSink: EventSink) : ItemEvents {
-    override fun update(id: UUID, dto: ItemPostDto) {
+    override fun create(id: UUID, dto: ItemGetDto) {
+        val event = ItemCreateEvent(ItemEventType.CREATE, id, dto)
+        eventSink.accept(event)
+    }
+
+    override fun update(id: UUID, dto: ItemGetDto) {
         val event = ItemUpdateEvent(ItemEventType.UPDATE, id, dto)
         eventSink.accept(event)
     }
 
-    override fun rank(id: UUID, op: RankOperation, newRank: Int) {
-        val event = ItemRankEvent(ItemEventType.RANK, id, op, newRank)
+    override fun rank(id: UUID, op: RankOperation, dto: ItemGetDto) {
+        val event = ItemRankEvent(ItemEventType.RANK, id, op, dto)
         eventSink.accept(event)
     }
 }

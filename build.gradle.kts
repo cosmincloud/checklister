@@ -20,7 +20,6 @@ repositories {
 }
 
 group = "cloud.cosmin.checklister"
-version = "0.0.9-SNAPSHOT"
 
 val compileKotlin: KotlinCompile by tasks
 

@@ -69,35 +69,4 @@ class ListControllerTest {
         val response = controller!!.getList(randomUUID)
         assertEquals(HttpStatus.OK, response.statusCode)
     }
-
-    @Test
-    @Throws(Exception::class)
-    fun testAddItem() {
-        val randomUUID = UUID.randomUUID()
-        val listEntity = ListEntity()
-        listEntity.id = randomUUID
-        listEntity.title = "title"
-        listEntity.items = ArrayList()
-
-        Mockito.`when`(listRepo!!.findById(ArgumentMatchers.any())).thenReturn(Optional.of(listEntity))
-
-        val entity = ItemEntity()
-        entity.content = "content"
-        entity.contentType = "contentType"
-        entity.rank = 2
-        entity.list = listEntity
-        Mockito.`when`(itemRepo!!.save(entity)).thenReturn(entity)
-
-        val itemPostDto = ItemPostDto(
-                "content",
-                "contentType"
-        )
-        itemPostDto.content = "content"
-        itemPostDto.contentType = "contentType"
-
-        val response = controller!!.createListItem(randomUUID, itemPostDto)
-
-        assertEquals(HttpStatus.CREATED, response.statusCode)
-        verify(itemRepo).save(entity)
-    }
 }

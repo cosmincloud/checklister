@@ -9,6 +9,6 @@
         <Root level="error">
             <AppenderRef ref="Console"/>
         </Root>
-        <Logger name="cloud.cosmin.checklister.service.eventsink.LoggerEventSink" level="info"/>
+        <Logger name="cloud.cosmin.checklister.service.event.eventsink.LoggerEventSink" level="info"/>
     </Loggers>
 </Configuration>

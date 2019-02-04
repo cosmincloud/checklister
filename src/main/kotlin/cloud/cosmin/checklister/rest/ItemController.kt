@@ -2,18 +2,15 @@ package cloud.cosmin.checklister.rest
 
 import cloud.cosmin.checklister.dto.ItemGetDto
 import cloud.cosmin.checklister.dto.ItemPostDto
-import cloud.cosmin.checklister.dto.ItemUpdateDto
-import cloud.cosmin.checklister.repo.ItemRepo
-import cloud.cosmin.checklister.service.ConverterService
 import cloud.cosmin.checklister.service.ItemService
 import cloud.cosmin.checklister.service.RankOperation
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import java.net.URI
 import java.util.*
 
 @Controller
@@ -38,16 +35,22 @@ constructor(private val itemService: ItemService) {
         return ResponseEntity.ok(optionalItem.get())
     }
 
+    @PostMapping("/api/v1/item")
+    @ApiOperation("Create an item")
+    fun createItem(@RequestBody dto: ItemPostDto): ResponseEntity<ItemGetDto> {
+        val createdItem = itemService.create(dto)
+        return ResponseEntity
+                .created(URI.create("/api/v1/item/" + createdItem.id))
+                .body(createdItem)
+    }
+
+
     @PutMapping("/api/v1/item/{itemId}")
     @ApiOperation("Update an item")
     fun updateItem(@PathVariable itemId: UUID,
                    @RequestBody dto: ItemPostDto): ResponseEntity<ItemGetDto> {
         val updated = itemService.update(itemId, dto)
-        return if(updated.isPresent) {
-            ResponseEntity.ok(updated.get())
-        } else {
-            ResponseEntity.notFound().build()
-        }
+        return ResponseEntity.ok(updated)
     }
 
     @PostMapping("/api/v1/item/{itemId}/rank/up")
