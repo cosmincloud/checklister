@@ -18,6 +18,10 @@ open class BaseIT {
         return service.http + "/api/v1/list"
     }
 
+    protected fun getItemUrl(service: Service): String {
+        return service.http + "/api/v1/item"
+    }
+
     private fun getItemPostUrl(listId: UUID): String {
         return getListUrl(service) + "/" + listId.toString() + "/item"
     }
@@ -42,8 +46,8 @@ open class BaseIT {
         return template.getForObject(listUri, ListGetDto::class.java)!!
     }
 
-    protected fun addItem(listId: UUID, item: ItemPostDto): ItemGetDto {
-        val url = getItemPostUrl(listId)
+    protected fun addItem(item: ItemPostDto): ItemGetDto {
+        val url = getItemUrl(service)
         return template.postForObject(url, item, ItemGetDto::class.java)!!
     }
 

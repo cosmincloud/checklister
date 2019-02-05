@@ -16,8 +16,8 @@ class ListCreationIT : BaseIT() {
     @Test
     fun itemCreation() {
         val (id) = createList("testtitle")
-        val itemPostUrl = service.http + "/api/v1/list/" + id!!.toString() + "/item"
-        val item = ItemPostDto("testcontent", null)
+        val itemPostUrl = service.http + "/api/v1/item"
+        val item = ItemPostDto(id, "testcontent", null)
 
         val newItemUri = template.postForLocation(itemPostUrl, item)
         assertNotNull(newItemUri)

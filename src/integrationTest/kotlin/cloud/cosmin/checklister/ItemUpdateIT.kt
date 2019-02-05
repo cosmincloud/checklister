@@ -9,11 +9,11 @@ import java.util.*
 class ItemUpdateIT : BaseIT() {
     @Test
     fun itemUpdate() {
-        val (id) = createList("testlist")
-        val itemPost = ItemPostDto("content", "text/plain")
+        val (listId) = createList("testlist")
+        val itemPost = ItemPostDto(listId, "content", "text/plain")
         val itemId: UUID?
         run {
-            val itemAdded = addItem(id!!, itemPost)
+            val itemAdded = addItem(itemPost)
             assertNotNull(itemAdded)
             assertEquals("content", itemAdded.content)
             assertEquals("text/plain", itemAdded.contentType)
@@ -23,7 +23,7 @@ class ItemUpdateIT : BaseIT() {
         run {
             itemPost.content = "content1"
             itemPost.contentType = "application/json"
-            val itemAdded = addItem(id!!, itemPost)
+            val itemAdded = addItem(itemPost)
             assertNotNull(itemAdded)
             assertEquals("content1", itemAdded.content)
             assertEquals("application/json", itemAdded.contentType)
