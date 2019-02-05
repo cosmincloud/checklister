@@ -85,40 +85,56 @@ internal class ItemServiceTest {
     fun testRankUp() {
         val id = UUID.randomUUID()
 
-        val entity = ItemEntity()
-        entity.id = id
-        entity.content = "dbContent"
-        entity.contentType = "dbContentType"
+        val before = ItemEntity()
+        before.id = id
+        before.content = "dbContent"
+        before.contentType = "dbContentType"
 
-        val dto = ItemGetDto(id, null, null, null, null)
+        val after = ItemEntity()
+        after.id = id
+        after.content = "dbContent"
+        after.contentType = "dbContentType"
 
-        `when`(itemRepo.rankUp(id)).thenReturn(entity)
-        `when`(converterService.itemDto(entity)).thenReturn(dto)
+        val beforeDto = ItemGetDto(id, null, null, null, null)
+        val afterDto = ItemGetDto(id, null, null, null, null)
+
+        `when`(itemRepo.findById(id)).thenReturn(Optional.of(before))
+        `when`(itemRepo.rankUp(id)).thenReturn(after)
+        `when`(converterService.itemDto(before)).thenReturn(beforeDto)
+        `when`(converterService.itemDto(after)).thenReturn(afterDto)
 
         val itemService = ItemService(listRepo, itemRepo, converterService, eventService)
         val returned = itemService.rank(id, RankOperation.UP)
 
-        assertEquals(dto, returned)
+        assertEquals(afterDto, returned)
     }
 
     @Test @DisplayName("should rank item down")
     fun testRankDown() {
         val id = UUID.randomUUID()
 
-        val entity = ItemEntity()
-        entity.id = id
-        entity.content = "dbContent"
-        entity.contentType = "dbContentType"
+        val before = ItemEntity()
+        before.id = id
+        before.content = "dbContent"
+        before.contentType = "dbContentType"
 
-        val dto = ItemGetDto(id, null, null, null, null)
+        val after = ItemEntity()
+        after.id = id
+        after.content = "dbContent"
+        after.contentType = "dbContentType"
 
-        `when`(itemRepo.rankDown(id)).thenReturn(entity)
-        `when`(converterService.itemDto(entity)).thenReturn(dto)
+        val beforeDto = ItemGetDto(id, null, null, null, null)
+        val afterDto = ItemGetDto(id, null, null, null, null)
+
+        `when`(itemRepo.findById(id)).thenReturn(Optional.of(before))
+        `when`(itemRepo.rankDown(id)).thenReturn(after)
+        `when`(converterService.itemDto(before)).thenReturn(beforeDto)
+        `when`(converterService.itemDto(after)).thenReturn(afterDto)
 
         val itemService = ItemService(listRepo, itemRepo, converterService, eventService)
         val returned = itemService.rank(id, RankOperation.DOWN)
 
-        assertEquals(dto, returned)
+        assertEquals(afterDto, returned)
     }
 
     @Test @DisplayName("should rank item top")
@@ -129,40 +145,56 @@ internal class ItemServiceTest {
 
         val id = UUID.randomUUID()
 
-        val entity = ItemEntity()
-        entity.id = id
-        entity.content = "dbContent"
-        entity.contentType = "dbContentType"
+        val before = ItemEntity()
+        before.id = id
+        before.content = "dbContent"
+        before.contentType = "dbContentType"
 
-        val dto = ItemGetDto(id, null, null, null, null)
+        val after = ItemEntity()
+        after.id = id
+        after.content = "dbContent"
+        after.contentType = "dbContentType"
 
-        `when`(itemRepo.rankTop(id)).thenReturn(entity)
-        `when`(converterService.itemDto(entity)).thenReturn(dto)
+        val beforeDto = ItemGetDto(id, null, null, null, null)
+        val afterDto = ItemGetDto(id, null, null, null, null)
+
+        `when`(itemRepo.findById(id)).thenReturn(Optional.of(before))
+        `when`(itemRepo.rankTop(id)).thenReturn(after)
+        `when`(converterService.itemDto(before)).thenReturn(beforeDto)
+        `when`(converterService.itemDto(after)).thenReturn(afterDto)
 
         val itemService = ItemService(listRepo, itemRepo, converterService, eventService)
         val returned = itemService.rank(id, RankOperation.TOP)
 
-        assertEquals(dto, returned)
+        assertEquals(afterDto, returned)
     }
 
     @Test @DisplayName("should rank item bottom")
     fun testRankBottom() {
         val id = UUID.randomUUID()
 
-        val entity = ItemEntity()
-        entity.id = id
-        entity.content = "dbContent"
-        entity.contentType = "dbContentType"
+        val before = ItemEntity()
+        before.id = id
+        before.content = "dbContent"
+        before.contentType = "dbContentType"
 
-        val dto = ItemGetDto(id, null, null, null, null)
+        val after = ItemEntity()
+        after.id = id
+        after.content = "dbContent"
+        after.contentType = "dbContentType"
 
-        `when`(itemRepo.rankBottom(id)).thenReturn(entity)
-        `when`(converterService.itemDto(entity)).thenReturn(dto)
+        val beforeDto = ItemGetDto(id, null, null, null, null)
+        val afterDto = ItemGetDto(id, null, null, null, null)
+
+        `when`(itemRepo.findById(id)).thenReturn(Optional.of(before))
+        `when`(itemRepo.rankBottom(id)).thenReturn(after)
+        `when`(converterService.itemDto(before)).thenReturn(beforeDto)
+        `when`(converterService.itemDto(after)).thenReturn(afterDto)
 
         val itemService = ItemService(listRepo, itemRepo, converterService, eventService)
         val returned = itemService.rank(id, RankOperation.BOTTOM)
 
-        assertEquals(dto, returned)
+        assertEquals(afterDto, returned)
     }
 
     @Test @DisplayName("should emit an update event")
@@ -170,44 +202,60 @@ internal class ItemServiceTest {
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
 
-        val entity = ItemEntity()
-        entity.id = id
-        entity.content = "dbContent"
-        entity.contentType = "dbContentType"
+        val before = ItemEntity()
+        before.id = id
+        before.content = "dbContent"
+        before.contentType = "dbContentType"
 
-        val dto = ItemGetDto(id, listId, "content", "contentType", null)
+        val after = ItemEntity()
+        after.id = id
+        after.content = "dbContent"
+        after.contentType = "dbContentType"
 
-        `when`(itemRepo.findById(id)).thenReturn(Optional.of(entity))
-        `when`(itemRepo.save(entity)).thenReturn(entity)
-        `when`(converterService.itemDto(entity)).thenReturn(dto)
+        val beforeDto = ItemGetDto(id, listId, "content", "contentType", null)
+        val afterDto = ItemGetDto(id, listId, "content", "contentType", null)
+
+        `when`(itemRepo.findById(id)).thenReturn(Optional.of(before))
+        `when`(itemRepo.save(before)).thenReturn(after)
+        `when`(converterService.itemDto(before)).thenReturn(beforeDto)
+        `when`(converterService.itemDto(after)).thenReturn(afterDto)
 
         val itemUpdateDto = ItemPostDto(listId, "content", "contentType")
 
         val itemService = ItemService(listRepo, itemRepo, converterService, eventService)
         itemService.update(id, itemUpdateDto)
 
-        verify(eventService).update(id, dto)
+        verify(eventService).update(beforeDto, afterDto)
     }
 
     @Test @DisplayName("should emit a rank event")
     fun testRankEvent() {
         val id = UUID.randomUUID()
 
-        val entity = ItemEntity()
-        entity.id = id
-        entity.content = "dbContent"
-        entity.contentType = "dbContentType"
-        entity.rank = 1
+        val before = ItemEntity()
+        before.id = id
+        before.content = "dbContent"
+        before.contentType = "dbContentType"
+        before.rank = 50
 
-        val dto = ItemGetDto(id, null, null, null, null)
+        val after = ItemEntity()
+        after.id = id
+        after.content = "dbContent"
+        after.contentType = "dbContentType"
+        after.rank = 1
 
-        `when`(itemRepo.rankTop(id)).thenReturn(entity)
-        `when`(converterService.itemDto(entity)).thenReturn(dto)
+        val beforeDto = ItemGetDto(id, null, null, null, null)
+        val afterDto = ItemGetDto(id, null, null, null, null)
+
+        `when`(itemRepo.findById(id)).thenReturn(Optional.of(before))
+        `when`(itemRepo.rankTop(id)).thenReturn(after)
+        `when`(converterService.itemDto(before)).thenReturn(beforeDto)
+        `when`(converterService.itemDto(after)).thenReturn(afterDto)
 
         val itemService = ItemService(listRepo, itemRepo, converterService, eventService)
         itemService.rank(id, RankOperation.TOP)
 
-        verify(eventService).rank(id, RankOperation.TOP, dto)
+        verify(eventService).rank(RankOperation.TOP, beforeDto, afterDto)
     }
 
     @Test @DisplayName("should emit a create event")
@@ -242,6 +290,6 @@ internal class ItemServiceTest {
         val itemService = ItemService(listRepo, itemRepo, converterService, eventService)
         itemService.create(ItemPostDto(listId, "dbContent", "dbContentType"))
 
-        verify(eventService).create(id, dto)
+        verify(eventService).create(dto)
     }
 }

@@ -10,18 +10,18 @@ import java.util.*
  */
 @Service
 class ItemEventService(private val eventSink: EventSink) : ItemEvents {
-    override fun create(id: UUID, dto: ItemGetDto) {
-        val event = ItemCreateEvent(ItemEventType.CREATE, id, dto)
+    override fun create(dto: ItemGetDto) {
+        val event = ItemCreateEvent(dto)
         eventSink.accept(event)
     }
 
-    override fun update(id: UUID, dto: ItemGetDto) {
-        val event = ItemUpdateEvent(ItemEventType.UPDATE, id, dto)
+    override fun update(before: ItemGetDto, after: ItemGetDto) {
+        val event = ItemUpdateEvent(before, after)
         eventSink.accept(event)
     }
 
-    override fun rank(id: UUID, op: RankOperation, dto: ItemGetDto) {
-        val event = ItemRankEvent(ItemEventType.RANK, id, op, dto)
+    override fun rank(op: RankOperation, before: ItemGetDto, after: ItemGetDto) {
+        val event = ItemRankEvent(op, before, after)
         eventSink.accept(event)
     }
 }

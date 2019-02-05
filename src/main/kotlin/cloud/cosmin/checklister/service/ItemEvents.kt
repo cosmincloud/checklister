@@ -7,7 +7,7 @@ import java.util.*
  * Actions on items that can be audited.
  */
 interface ItemEvents {
-    fun create(id: UUID, dto: ItemGetDto)
-    fun update(id: UUID, dto: ItemGetDto)
-    fun rank(id: UUID, op: RankOperation, dto: ItemGetDto)
+    fun create(dto: ItemGetDto)
+    fun update(before: ItemGetDto, after: ItemGetDto)
+    fun rank(operation: RankOperation, before: ItemGetDto, after: ItemGetDto)
 }

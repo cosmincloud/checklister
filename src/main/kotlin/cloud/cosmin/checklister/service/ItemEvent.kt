@@ -23,18 +23,13 @@ abstract class AbstractEvent : Event {
 data class ListCreateEvent(
         val type: ItemEventType)
 
-data class ItemCreateEvent(
-        val type: ItemEventType,
-        val id: UUID,
-        val item: ItemGetDto) : AbstractEvent()
+data class ItemCreateEvent(val item: ItemGetDto) : AbstractEvent()
 
 data class ItemUpdateEvent(
-        val type: ItemEventType,
-        val id: UUID,
-        val item: ItemGetDto) : AbstractEvent()
+        val before: ItemGetDto,
+        val after: ItemGetDto) : AbstractEvent()
 
 data class ItemRankEvent(
-        val type: ItemEventType,
-        val id: UUID,
         val op: RankOperation,
-        val item: ItemGetDto) : AbstractEvent()
+        val before: ItemGetDto,
+        val after: ItemGetDto) : AbstractEvent()

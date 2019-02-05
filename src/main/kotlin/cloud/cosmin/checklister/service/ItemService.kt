@@ -40,7 +40,7 @@ class ItemService(val listRepo: ListRepo,
 
         val savedItem = itemRepo.save(newItem)
         val dto = converterService.itemDto(savedItem)
-        itemEventService.create(savedItem.id!!, dto)
+        itemEventService.create(dto)
         return dto
     }
 
@@ -51,25 +51,34 @@ class ItemService(val listRepo: ListRepo,
         }
 
         val item: ItemEntity = optionalItem.get()
+        val before = converterService.itemDto(item)
         item.content = updatedDto.content
         item.contentType = updatedDto.contentType
 
         val saved = itemRepo.save(item)
-        val dto = converterService.itemDto(saved)
-        itemEventService.update(id, dto)
-        return dto
+        val after = converterService.itemDto(saved)
+        itemEventService.update(before, after)
+        return after
     }
 
     fun rank(id: UUID, op: RankOperation): ItemGetDto {
-        val entity = when(op) {
+        val optionalItem = itemRepo.findById(id)
+        if (!optionalItem.isPresent) {
+            throw RuntimeException("item not found with id: $id")
+        }
+
+        val item: ItemEntity = optionalItem.get()
+        val before = converterService.itemDto(item)
+
+        val updated = when(op) {
             RankOperation.UP     -> itemRepo.rankUp(id)
             RankOperation.DOWN   -> itemRepo.rankDown(id)
             RankOperation.TOP    -> itemRepo.rankTop(id)
             RankOperation.BOTTOM -> itemRepo.rankBottom(id)
         }
 
-        val dto = converterService.itemDto(entity)
-        itemEventService.rank(id, op, dto)
-        return dto
+        val after = converterService.itemDto(updated)
+        itemEventService.rank(op, before, after)
+        return after
     }
 }
