@@ -1,9 +1,8 @@
-package cloud.cosmin.checklister.service
+package cloud.cosmin.checklister.service.event
 
 import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.service.event.EventSink
+import cloud.cosmin.checklister.service.RankOperation
 import org.springframework.stereotype.Service
-import java.util.*
 
 /**
  * Converts item actions into events.

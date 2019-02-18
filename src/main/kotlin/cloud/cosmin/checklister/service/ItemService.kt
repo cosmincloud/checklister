@@ -5,6 +5,8 @@ import cloud.cosmin.checklister.dto.ItemGetDto
 import cloud.cosmin.checklister.dto.ItemPostDto
 import cloud.cosmin.checklister.repo.ItemRepo
 import cloud.cosmin.checklister.repo.ListRepo
+import cloud.cosmin.checklister.service.ConverterService
+import cloud.cosmin.checklister.service.event.ItemEventService
 import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 import java.util.*

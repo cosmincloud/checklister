@@ -1,9 +1,7 @@
-package cloud.cosmin.checklister.service
+package cloud.cosmin.checklister.service.event
 
 import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.service.event.Event
-import cloud.cosmin.checklister.service.event.ToStringEventSerializer
-import java.util.*
+import cloud.cosmin.checklister.service.RankOperation
 
 enum class ListEventType {
     CREATE, UPDATE, ADD

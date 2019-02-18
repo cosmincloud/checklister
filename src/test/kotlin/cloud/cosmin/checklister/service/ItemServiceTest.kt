@@ -6,6 +6,7 @@ import cloud.cosmin.checklister.dto.ItemGetDto
 import cloud.cosmin.checklister.dto.ItemPostDto
 import cloud.cosmin.checklister.repo.ItemRepo
 import cloud.cosmin.checklister.repo.ListRepo
+import cloud.cosmin.checklister.service.event.ItemEventService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach

@@ -1,7 +1,7 @@
-package cloud.cosmin.checklister.service
+package cloud.cosmin.checklister.service.event
 
 import cloud.cosmin.checklister.dto.ItemGetDto
-import java.util.*
+import cloud.cosmin.checklister.service.RankOperation
 
 /**
  * Actions on items that can be audited.

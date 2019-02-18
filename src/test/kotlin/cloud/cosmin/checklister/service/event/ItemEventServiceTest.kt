@@ -1,7 +1,7 @@
-package cloud.cosmin.checklister.service
+package cloud.cosmin.checklister.service.event
 
 import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.service.event.EventSink
+import cloud.cosmin.checklister.service.RankOperation
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
