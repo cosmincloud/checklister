@@ -5,6 +5,7 @@ import cloud.cosmin.checklister.dto.ListGetDto
 import cloud.cosmin.checklister.dto.ListPostDto
 import cloud.cosmin.checklister.dto.ListWithItemsDto
 import cloud.cosmin.checklister.repo.ListRepo
+import cloud.cosmin.checklister.service.event.ListEventService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -13,7 +14,8 @@ import java.util.*
 class ListService @Autowired constructor(
         private val listRepo: ListRepo,
         private val converterService: ConverterService,
-        private val uuidService: UuidService
+        private val uuidService: UuidService,
+        private val listEventService: ListEventService
 ) {
     fun findAll(): List<ListGetDto> {
         return listRepo.findAll()
@@ -51,7 +53,9 @@ class ListService @Autowired constructor(
         newList.id = uuidService.get()
         newList.title = listPostDto.title
         val saved = listRepo.save(newList)
-        return converterService.listDto(saved)
+        val dto = converterService.listDto(saved)
+        listEventService.create(dto)
+        return dto
     }
 
     fun update(id: UUID, listPostDto: ListPostDto): Optional<ListGetDto> {
@@ -61,9 +65,12 @@ class ListService @Autowired constructor(
         }
 
         val list = optionalList.get()
+        val beforeDto = converterService.listDto(list)
         list.title = listPostDto.title
 
         val saved = listRepo.save(list)
-        return Optional.of(converterService.listDto(saved))
+        val afterDto = converterService.listDto(saved)
+        listEventService.update(beforeDto, afterDto)
+        return Optional.of(afterDto)
     }
 }

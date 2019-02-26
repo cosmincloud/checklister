@@ -2,13 +2,15 @@ package cloud.cosmin.checklister.service.event
 
 import cloud.cosmin.checklister.dto.ItemGetDto
 import cloud.cosmin.checklister.service.RankOperation
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
  * Converts item actions into events.
  */
 @Service
-class ItemEventService(private val eventSink: EventSink) : ItemEvents {
+class ItemEventService @Autowired
+constructor(private val eventSink: EventSink) : ItemEvents {
     override fun create(dto: ItemGetDto) {
         val event = ItemCreateEvent(dto)
         eventSink.accept(event)

@@ -4,7 +4,9 @@ import cloud.cosmin.checklister.dao.ListEntity
 import cloud.cosmin.checklister.dto.ListGetDto
 import cloud.cosmin.checklister.dto.ListPostDto
 import cloud.cosmin.checklister.repo.ListRepo
+import cloud.cosmin.checklister.service.event.ListEventService
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
@@ -12,12 +14,23 @@ import java.util.*
 
 @DisplayName("ListService")
 internal class ListServiceTest {
-    @Test @DisplayName("should save lists")
+    val listRepo = mock(ListRepo::class.java)
+    val converterService = ConverterService()
+    val uuidService = mock(UuidService::class.java)
+    val listEventService = mock(ListEventService::class.java)
+
+    fun createListService(): ListService {
+        return ListService(listRepo, converterService, uuidService, listEventService)
+    }
+
+    @BeforeEach
+    fun setUp() {
+        reset(listRepo, uuidService, listEventService)
+    }
+
+    @Test @DisplayName("should create lists")
     fun test01() {
-        val listRepo = mock(ListRepo::class.java)
-        val converterService = mock(ConverterService::class.java)
-        val uuidService = mock(UuidService::class.java)
-        val service = ListService(listRepo, converterService, uuidService)
+        val service = createListService()
 
         val uuid = UUID.randomUUID()
         val entity = ListEntity()
@@ -28,11 +41,8 @@ internal class ListServiceTest {
         savedEntity.id = UUID.randomUUID()
         savedEntity.title = "title"
 
-        val listGetDto = ListGetDto(savedEntity.id, "title")
-
         `when`(uuidService.get()).thenReturn(uuid)
         `when`(listRepo.save(entity)).thenReturn(savedEntity)
-        `when`(converterService.listDto(savedEntity)).thenReturn(listGetDto)
 
         val dto = ListPostDto("title")
         val createdDto = service.create(dto)
@@ -44,10 +54,7 @@ internal class ListServiceTest {
 
     @Test @DisplayName("should update lists")
     fun test02() {
-        val listRepo = mock(ListRepo::class.java)
-        val converterService = mock(ConverterService::class.java)
-        val uuidService = mock(UuidService::class.java)
-        val service = ListService(listRepo, converterService, uuidService)
+        val service = createListService()
 
         val listId = UUID.randomUUID()
 
@@ -59,11 +66,8 @@ internal class ListServiceTest {
         updatedList.id = dbList.id
         updatedList.title = "newTitle"
 
-        val listGetDto = ListGetDto(updatedList.id, "newTitle")
-
         `when`(listRepo.findById(listId)).thenReturn(Optional.of(dbList))
         `when`(listRepo.save(updatedList)).thenReturn(updatedList)
-        `when`(converterService.listDto(updatedList)).thenReturn(listGetDto)
 
         val listPostDto = ListPostDto("newTitle")
 
@@ -72,5 +76,48 @@ internal class ListServiceTest {
         verify(listRepo).save(updatedList)
         assertEquals(updatedList.id, updatedDto.get().id)
         assertEquals("newTitle", updatedDto.get().title)
+    }
+
+    @Test @DisplayName("should emit create events")
+    fun test03() {
+        val service = createListService()
+
+        val uuid = UUID.randomUUID()
+        `when`(uuidService.get()).thenReturn(uuid)
+
+        val listEntity = ListEntity()
+        listEntity.id = uuid
+        listEntity.title = "listTitle"
+        `when`(listRepo.save(listEntity)).thenReturn(listEntity)
+
+        val post = ListPostDto("listTitle")
+        service.create(post)
+
+        val listGetDto = ListGetDto(uuid, "listTitle")
+        verify(listEventService).create(listGetDto)
+    }
+
+    @Test @DisplayName("should emit update events")
+    fun test04() {
+        val service = createListService()
+
+        val uuid = UUID.randomUUID()
+
+        val currentEntity = ListEntity()
+        currentEntity.id = uuid
+        currentEntity.title = "oldTitle"
+        `when`(listRepo.findById(uuid)).thenReturn(Optional.of(currentEntity))
+
+        val updatedEntity = ListEntity()
+        updatedEntity.id = uuid
+        updatedEntity.title = "newTitle"
+        `when`(listRepo.save(updatedEntity)).thenReturn(updatedEntity)
+
+        val post = ListPostDto("newTitle")
+        service.update(uuid, post)
+
+        val listBeforeDto = ListGetDto(currentEntity.id, "oldTitle")
+        val listAfterDto = ListGetDto(updatedEntity.id, "newTitle")
+        verify(listEventService).update(listBeforeDto, listAfterDto)
     }
 }
