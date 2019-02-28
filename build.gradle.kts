@@ -142,4 +142,5 @@ dependencies {
 
     implementation(project(":checklister-event"))
     implementation(project(":checklister-eventsink-logger"))
+    implementation(project(":checklister-dto"))
 }

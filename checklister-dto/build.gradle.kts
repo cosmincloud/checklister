@@ -10,5 +10,4 @@ repositories {
 dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
-    implementation(project(":checklister-dto"))
 }

@@ -1,2 +1,4 @@
 rootProject.name = "checklister"
-include("checklister-event", "checklister-eventsink-logger")
+include("checklister-event",
+        "checklister-eventsink-logger",
+        "checklister-dto")

@@ -1,7 +1,7 @@
-package cloud.cosmin.checklister.service.event
+package cloud.cosmin.checklister.lib.event
 
-import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.service.RankOperation
+import cloud.cosmin.checklister.lib.dto.ItemGetDto
+import cloud.cosmin.checklister.lib.event.model.RankOperation
 
 /**
  * Actions on items that can be audited.
