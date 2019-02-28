@@ -139,4 +139,7 @@ dependencies {
 
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-java:3.13.0")
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-remote-driver:3.13.0")
+
+    implementation(project(":checklister-event"))
+    implementation(project(":checklister-eventsink-logger"))
 }

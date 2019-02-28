@@ -1,6 +1,7 @@
 package cloud.cosmin.checklister.service.event
 
 import cloud.cosmin.checklister.dto.ListGetDto
+import cloud.cosmin.checklister.lib.event.sink.EventSink
 import cloud.cosmin.checklister.service.ListEvents
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
