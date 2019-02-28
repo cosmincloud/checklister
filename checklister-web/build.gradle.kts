@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
-import io.swagger.v3.plugins.gradle.tasks.ResolveTask.Format.JSON
 
 plugins {
     id("java")
@@ -64,7 +63,7 @@ val integrationTest = task<Test>("integrationTest") {
 val generateBuildConfigResourceTask by tasks.registering {
     File("checklister-web/src/main/resources/checklister-build.properties")
             .printWriter().use { out ->
-                out.println("version=${project.version.toString()}")
+                out.println("version=${project.version}")
             }
 }
 
