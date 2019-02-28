@@ -1,11 +1,11 @@
 package cloud.cosmin.checklister.dto
 
+import cloud.cosmin.checklister.lib.dto.ListPostDto
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import java.util.*
 
 @DisplayName("ListPostDto")
 internal class ListPostDtoTest {

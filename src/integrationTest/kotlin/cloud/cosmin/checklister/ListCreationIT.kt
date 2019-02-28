@@ -1,7 +1,7 @@
 package cloud.cosmin.checklister
 
-import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.dto.ItemPostDto
+import cloud.cosmin.checklister.lib.dto.ItemGetDto
+import cloud.cosmin.checklister.lib.dto.ItemPostDto
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test

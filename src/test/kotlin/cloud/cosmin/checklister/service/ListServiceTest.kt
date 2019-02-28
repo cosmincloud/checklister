@@ -1,8 +1,8 @@
 package cloud.cosmin.checklister.service
 
 import cloud.cosmin.checklister.dao.ListEntity
-import cloud.cosmin.checklister.dto.ListGetDto
-import cloud.cosmin.checklister.dto.ListPostDto
+import cloud.cosmin.checklister.lib.dto.ListGetDto
+import cloud.cosmin.checklister.lib.dto.ListPostDto
 import cloud.cosmin.checklister.repo.ListRepo
 import cloud.cosmin.checklister.service.event.ListEventService
 import org.junit.jupiter.api.Assertions.assertEquals

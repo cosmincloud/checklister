@@ -1,9 +1,9 @@
 package cloud.cosmin.checklister.rest
 
-import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.dto.ItemPostDto
+import cloud.cosmin.checklister.lib.dto.ItemGetDto
+import cloud.cosmin.checklister.lib.dto.ItemPostDto
+import cloud.cosmin.checklister.lib.event.model.RankOperation
 import cloud.cosmin.checklister.service.ItemService
-import cloud.cosmin.checklister.service.RankOperation
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired

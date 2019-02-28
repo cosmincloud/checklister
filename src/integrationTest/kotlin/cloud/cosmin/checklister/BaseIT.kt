@@ -2,10 +2,10 @@ package cloud.cosmin.checklister
 
 import cloud.cosmin.checklister.discovery.Service
 import cloud.cosmin.checklister.discovery.ServiceDiscovery
-import cloud.cosmin.checklister.dto.ItemGetDto
-import cloud.cosmin.checklister.dto.ItemPostDto
-import cloud.cosmin.checklister.dto.ListGetDto
-import cloud.cosmin.checklister.dto.ListPostDto
+import cloud.cosmin.checklister.lib.dto.ItemGetDto
+import cloud.cosmin.checklister.lib.dto.ItemPostDto
+import cloud.cosmin.checklister.lib.dto.ListGetDto
+import cloud.cosmin.checklister.lib.dto.ListPostDto
 import org.junit.Assert.assertNotNull
 import org.springframework.web.client.RestTemplate
 import java.util.*

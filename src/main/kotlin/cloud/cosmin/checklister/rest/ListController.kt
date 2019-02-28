@@ -1,13 +1,9 @@
 package cloud.cosmin.checklister.rest
 
-import cloud.cosmin.checklister.dto.ListGetDto
-import cloud.cosmin.checklister.dto.ListPostDto
-import cloud.cosmin.checklister.dto.ListWithItemsDto
-import cloud.cosmin.checklister.repo.ItemRepo
-import cloud.cosmin.checklister.repo.ListRepo
-import cloud.cosmin.checklister.service.ConverterService
+import cloud.cosmin.checklister.lib.dto.ListGetDto
+import cloud.cosmin.checklister.lib.dto.ListPostDto
+import cloud.cosmin.checklister.lib.dto.ListWithItemsDto
 import cloud.cosmin.checklister.service.ListService
-import cloud.cosmin.checklister.service.UuidService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
