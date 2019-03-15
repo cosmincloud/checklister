@@ -24,12 +24,12 @@ constructor(private val uuidService: UuidService,
     }
 
     override fun update(before: ItemGetDto, after: ItemGetDto) {
-        val event = ItemUpdateEvent(before, after)
+        val event = ItemUpdateEvent(uuidService.get(), before, after)
         eventSink.accept(event)
     }
 
     override fun rank(op: RankOperation, before: ItemGetDto, after: ItemGetDto) {
-        val event = ItemRankEvent(op, before, after)
+        val event = ItemRankEvent(uuidService.get(), op, before, after)
         eventSink.accept(event)
     }
 }
