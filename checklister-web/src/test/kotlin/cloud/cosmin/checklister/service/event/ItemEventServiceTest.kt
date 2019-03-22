@@ -1,8 +1,7 @@
 package cloud.cosmin.checklister.service.event
 
 import cloud.cosmin.checklister.lib.dto.ItemGetDto
-import cloud.cosmin.checklister.lib.event.model.ItemRankEvent
-import cloud.cosmin.checklister.lib.event.model.ItemUpdateEvent
+import cloud.cosmin.checklister.lib.event.Event
 import cloud.cosmin.checklister.lib.event.model.RankOperation
 import cloud.cosmin.checklister.lib.event.sink.EventSink
 import cloud.cosmin.checklister.service.UuidService
@@ -33,7 +32,7 @@ internal class ItemEventServiceTest {
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
         service.update(beforeDto, afterDto)
 
-        val event = ItemUpdateEvent(eventId, beforeDto, afterDto)
+        val event = Event.create(eventId, "ITEM_UPDATE", beforeDto, afterDto)
         verify(eventSink).accept(event)
     }
 
@@ -49,7 +48,7 @@ internal class ItemEventServiceTest {
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
         service.rank(RankOperation.UP, beforeDto, afterDto)
 
-        val event = ItemRankEvent(eventId, RankOperation.UP, beforeDto, afterDto)
+        val event = Event.create(eventId, "ITEM_RANK_UP", beforeDto, afterDto)
         verify(eventSink).accept(event)
     }
 
@@ -65,7 +64,7 @@ internal class ItemEventServiceTest {
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
         service.rank(RankOperation.DOWN, beforeDto, afterDto)
 
-        val event = ItemRankEvent(eventId, RankOperation.DOWN, beforeDto, afterDto)
+        val event = Event.create(eventId, "ITEM_RANK_DOWN", beforeDto, afterDto)
         verify(eventSink).accept(event)
     }
 
@@ -81,7 +80,7 @@ internal class ItemEventServiceTest {
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
         service.rank(RankOperation.TOP, beforeDto, afterDto)
 
-        val event = ItemRankEvent(eventId, RankOperation.TOP, beforeDto, afterDto)
+        val event = Event.create(eventId, "ITEM_RANK_TOP", beforeDto, afterDto)
         verify(eventSink).accept(event)
     }
 
@@ -97,7 +96,7 @@ internal class ItemEventServiceTest {
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
         service.rank(RankOperation.BOTTOM, beforeDto, afterDto)
 
-        val event = ItemRankEvent(eventId, RankOperation.BOTTOM, beforeDto, afterDto)
+        val event = Event.create(eventId, "ITEM_RANK_BOTTOM", beforeDto, afterDto)
         verify(eventSink).accept(event)
     }
 }

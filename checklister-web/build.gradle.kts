@@ -129,6 +129,8 @@ dependencies {
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-remote-driver:3.13.0")
 
     implementation(project(":checklister-event"))
-    implementation(project(":checklister-eventsink-logger"))
     implementation(project(":checklister-dto"))
+    implementation(project(":checklister-eventserde-json"))
+    implementation(project(":checklister-eventsink-kafka"))
+    implementation(project(":checklister-eventsink-logger"))
 }

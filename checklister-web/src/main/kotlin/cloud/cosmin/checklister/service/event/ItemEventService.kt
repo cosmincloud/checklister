@@ -1,10 +1,8 @@
 package cloud.cosmin.checklister.service.event
 
 import cloud.cosmin.checklister.lib.dto.ItemGetDto
+import cloud.cosmin.checklister.lib.event.Event
 import cloud.cosmin.checklister.lib.event.ItemEvents
-import cloud.cosmin.checklister.lib.event.model.ItemCreateEvent
-import cloud.cosmin.checklister.lib.event.model.ItemRankEvent
-import cloud.cosmin.checklister.lib.event.model.ItemUpdateEvent
 import cloud.cosmin.checklister.lib.event.model.RankOperation
 import cloud.cosmin.checklister.lib.event.sink.EventSink
 import cloud.cosmin.checklister.service.UuidService
@@ -19,17 +17,17 @@ class ItemEventService @Autowired
 constructor(private val uuidService: UuidService,
             private val eventSink: EventSink) : ItemEvents {
     override fun create(dto: ItemGetDto) {
-        val event = ItemCreateEvent(uuidService.get(), dto)
+        val event = Event.after(uuidService.get(), "ITEM_CREATE", dto)
         eventSink.accept(event)
     }
 
     override fun update(before: ItemGetDto, after: ItemGetDto) {
-        val event = ItemUpdateEvent(uuidService.get(), before, after)
+        val event = Event.create(uuidService.get(), "ITEM_UPDATE", before, after)
         eventSink.accept(event)
     }
 
-    override fun rank(op: RankOperation, before: ItemGetDto, after: ItemGetDto) {
-        val event = ItemRankEvent(uuidService.get(), op, before, after)
+    override fun rank(operation: RankOperation, before: ItemGetDto, after: ItemGetDto) {
+        val event = Event.create(uuidService.get(), "ITEM_RANK_${operation.name.toUpperCase()}", before, after)
         eventSink.accept(event)
     }
 }
