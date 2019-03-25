@@ -3,10 +3,12 @@ package cloud.cosmin.checklister.lib.eventsink.kafka
 import cloud.cosmin.checklister.lib.event.Event
 import cloud.cosmin.checklister.lib.event.serde.EventSerializer
 import cloud.cosmin.checklister.lib.event.sink.EventSink
-import org.apache.kafka.clients.producer.ProducerConfig.*
 import org.apache.kafka.clients.producer.KafkaProducer
+import org.apache.kafka.clients.producer.ProducerConfig.BOOTSTRAP_SERVERS_CONFIG
+import org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG
+import org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG
 import org.apache.kafka.clients.producer.ProducerRecord
-import java.util.*
+import java.util.Properties
 
 class KafkaEventSink(brokers: String,
                      private val topic: String,
@@ -19,10 +21,11 @@ class KafkaEventSink(brokers: String,
         KafkaProducer<String, ByteArray>(properties)
     }
 
-    override fun accept(event: Event) {
+    override fun accept(event: Event): ByteArray {
         val eventBytes = serializer.serialize(event)
         val record = ProducerRecord<String, ByteArray>(topic, null, eventBytes)
         producer.send(record)
+        return eventBytes
     }
 
     fun close(): Unit {
