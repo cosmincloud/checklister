@@ -1,7 +1,9 @@
 package cloud.cosmin.checklister.service
 
+import cloud.cosmin.checklister.dao.EventEntity
 import cloud.cosmin.checklister.dao.ItemEntity
 import cloud.cosmin.checklister.dao.ListEntity
+import cloud.cosmin.checklister.lib.dto.EventDto
 import cloud.cosmin.checklister.lib.dto.ItemGetDto
 import cloud.cosmin.checklister.lib.dto.ListGetDto
 import org.springframework.stereotype.Service
@@ -22,6 +24,13 @@ class ConverterService {
                 itemEntity.content,
                 itemEntity.contentType,
                 itemEntity.rank
+        )
+    }
+
+    fun eventDto(eventEntity: EventEntity): EventDto {
+        return EventDto(
+                eventEntity.id!!,
+                eventEntity.type!!
         )
     }
 }

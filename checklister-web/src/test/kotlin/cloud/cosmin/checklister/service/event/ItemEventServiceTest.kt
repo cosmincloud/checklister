@@ -5,6 +5,7 @@ import cloud.cosmin.checklister.lib.event.Event
 import cloud.cosmin.checklister.lib.event.model.RankOperation
 import cloud.cosmin.checklister.lib.event.sink.EventSink
 import cloud.cosmin.checklister.service.UuidService
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
@@ -20,83 +21,99 @@ internal class ItemEventServiceTest {
         return uuidService
     }
 
+    val eventSink = mock(EventSink::class.java)
+    val eventService = mock(EventService::class.java)
+    val service = ItemEventService(getUuidService(), eventSink, eventService)
+
+    val byteArray = "".toByteArray()
+
+    @BeforeEach
+    fun setUp() {
+        reset(eventSink, eventService)
+    }
+
     @Test
     @DisplayName("should sink an update event")
     fun testUpdateEvent() {
-        val eventSink = mock(EventSink::class.java)
-        val service = ItemEventService(getUuidService(), eventSink)
-
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
         val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val event = Event.update(eventId, "ITEM_UPDATE", beforeDto, afterDto)
+
+        `when`(eventSink.accept(event)).thenReturn(byteArray)
+
         service.update(beforeDto, afterDto)
 
-        val event = Event.create(eventId, "ITEM_UPDATE", beforeDto, afterDto)
         verify(eventSink).accept(event)
+        verify(eventService).save(event, byteArray)
     }
 
     @Test
     @DisplayName("should sink a rank up event")
     fun testRankUp() {
-        val eventSink = mock(EventSink::class.java)
-        val service = ItemEventService(getUuidService(), eventSink)
-
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
         val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val event = Event.update(eventId, "ITEM_RANK_UP", beforeDto, afterDto)
+
+        `when`(eventSink.accept(event)).thenReturn(byteArray)
+
         service.rank(RankOperation.UP, beforeDto, afterDto)
 
-        val event = Event.create(eventId, "ITEM_RANK_UP", beforeDto, afterDto)
         verify(eventSink).accept(event)
+        verify(eventService).save(event, byteArray)
     }
 
     @Test
     @DisplayName("should sink a rank down event")
     fun testRankDown() {
-        val eventSink = mock(EventSink::class.java)
-        val service = ItemEventService(getUuidService(), eventSink)
-
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
         val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val event = Event.update(eventId, "ITEM_RANK_DOWN", beforeDto, afterDto)
+
+        `when`(eventSink.accept(event)).thenReturn(byteArray)
+
         service.rank(RankOperation.DOWN, beforeDto, afterDto)
 
-        val event = Event.create(eventId, "ITEM_RANK_DOWN", beforeDto, afterDto)
         verify(eventSink).accept(event)
+        verify(eventService).save(event, byteArray)
     }
 
     @Test
     @DisplayName("should sink a rank top event")
     fun testRankTop() {
-        val eventSink = mock(EventSink::class.java)
-        val service = ItemEventService(getUuidService(), eventSink)
-
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
         val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val event = Event.update(eventId, "ITEM_RANK_TOP", beforeDto, afterDto)
+
+        `when`(eventSink.accept(event)).thenReturn(byteArray)
+
         service.rank(RankOperation.TOP, beforeDto, afterDto)
 
-        val event = Event.create(eventId, "ITEM_RANK_TOP", beforeDto, afterDto)
         verify(eventSink).accept(event)
+        verify(eventService).save(event, byteArray)
     }
 
     @Test
     @DisplayName("should sink a rank bottom event")
     fun testRankBottom() {
-        val eventSink = mock(EventSink::class.java)
-        val service = ItemEventService(getUuidService(), eventSink)
-
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
         val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
         val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val event = Event.update(eventId, "ITEM_RANK_BOTTOM", beforeDto, afterDto)
+
+        `when`(eventSink.accept(event)).thenReturn(byteArray)
+
         service.rank(RankOperation.BOTTOM, beforeDto, afterDto)
 
-        val event = Event.create(eventId, "ITEM_RANK_BOTTOM", beforeDto, afterDto)
         verify(eventSink).accept(event)
+        verify(eventService).save(event, byteArray)
     }
 }
