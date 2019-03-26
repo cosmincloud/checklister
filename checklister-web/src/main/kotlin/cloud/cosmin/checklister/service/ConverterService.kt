@@ -30,7 +30,8 @@ class ConverterService {
     fun eventDto(eventEntity: EventEntity): EventDto {
         return EventDto(
                 eventEntity.id!!,
-                eventEntity.type!!
+                eventEntity.type!!,
+                String(eventEntity.bytes!!)
         )
     }
 }

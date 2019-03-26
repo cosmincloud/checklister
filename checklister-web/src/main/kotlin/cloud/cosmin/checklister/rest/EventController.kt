@@ -20,8 +20,9 @@ class EventController
 @Autowired constructor(private val eventService: EventService) {
     @GetMapping("/api/v1/event")
     @ApiOperation("List events")
-    fun getEvents(pageable: Pageable): Page<EventDto> {
-        return eventService.findAll(pageable)
+    fun getEvents(pageable: Pageable): ResponseEntity<Page<EventDto>> {
+        val page = eventService.findAll(pageable)
+        return ResponseEntity.ok(page)
     }
 
     @DeleteMapping("/api/v1/event/{id}")
