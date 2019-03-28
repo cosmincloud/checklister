@@ -1,4 +1,4 @@
-package cloud.cosmin.checklister.lib.event.serializer
+package cloud.cosmin.checklister.lib.event.serde
 
 import cloud.cosmin.checklister.lib.event.Event
 

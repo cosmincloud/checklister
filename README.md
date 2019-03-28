@@ -18,4 +18,7 @@ docker-compose logs -f checklister
 
 Publishing:
 ```
-
+./gradlew clean build :checklister-web:bootJar
+docker build -t blacktower:5000/cosapps/checklister:<version> .
+docker push docker build -t blacktower:5000/cosapps/checklister:<version>
+```

@@ -3,7 +3,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     id("java")
-    id("org.springframework.boot") version "2.1.1.RELEASE"
+    id("org.springframework.boot") version "2.1.3.RELEASE"
     kotlin("jvm") version "1.3.11"
     // https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support
     id("org.jetbrains.kotlin.plugin.spring") version "1.3.11"
@@ -129,6 +129,8 @@ dependencies {
 //    integrationTestCompile("org.seleniumhq.selenium:selenium-remote-driver:3.13.0")
 
     implementation(project(":checklister-event"))
-    implementation(project(":checklister-eventsink-logger"))
     implementation(project(":checklister-dto"))
+    implementation(project(":checklister-eventserde-json"))
+    implementation(project(":checklister-eventsink-kafka"))
+    implementation(project(":checklister-eventsink-logger"))
 }

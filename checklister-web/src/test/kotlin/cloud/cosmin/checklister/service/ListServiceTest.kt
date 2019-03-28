@@ -28,7 +28,7 @@ internal class ListServiceTest {
         reset(listRepo, uuidService, listEventService)
     }
 
-    @Test @DisplayName("should create lists")
+    @Test @DisplayName("should update lists")
     fun test01() {
         val service = createListService()
 
@@ -78,7 +78,7 @@ internal class ListServiceTest {
         assertEquals("newTitle", updatedDto.get().title)
     }
 
-    @Test @DisplayName("should emit create events")
+    @Test @DisplayName("should emit update events")
     fun test03() {
         val service = createListService()
 

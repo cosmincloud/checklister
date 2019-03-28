@@ -36,32 +36,18 @@ constructor(
     @GetMapping("/api/v1/list/{listId}")
     @ApiOperation("Retrieve a single list")
     fun getList(@PathVariable listId: UUID): ResponseEntity<ListGetDto> {
-        val optionalList = listService.findById(listId)
-        if (!optionalList.isPresent) {
-            return ResponseEntity.notFound().build()
-        }
-
-        return ResponseEntity.ok(optionalList.get())
+        return ResponseEntity.of(listService.findById(listId))
     }
 
     @PutMapping(value = arrayOf("/api/v1/list/{listId}"))
     fun updateList(@PathVariable listId: UUID,
                    @RequestBody listDto: ListPostDto): ResponseEntity<ListGetDto> {
-        val optionalDto = listService.update(listId, listDto)
-        if (optionalDto.isEmpty) {
-            return ResponseEntity.notFound().build()
-        }
-
-        return ResponseEntity.ok().body(optionalDto.get())
+        return ResponseEntity.of(listService.update(listId, listDto))
     }
 
     @GetMapping("/api/v1/list/{listId}/item")
     @ApiOperation("Retrieve all items in a list")
     fun getListWithItems(@PathVariable listId: UUID): ResponseEntity<ListWithItemsDto> {
-        val optionalList = listService.findByIdWithItems(listId)
-        if (optionalList.isEmpty) {
-            return ResponseEntity.notFound().build()
-        }
-        return ResponseEntity.ok(optionalList.get())
+        return ResponseEntity.of(listService.findByIdWithItems(listId))
     }
 }

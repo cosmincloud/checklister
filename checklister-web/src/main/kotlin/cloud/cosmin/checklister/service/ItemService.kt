@@ -8,6 +8,7 @@ import cloud.cosmin.checklister.repo.ItemRepo
 import cloud.cosmin.checklister.repo.ListRepo
 import cloud.cosmin.checklister.service.event.ItemEventService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -20,6 +21,7 @@ class ItemService(val listRepo: ListRepo,
                 .map { converterService.itemDto(it) }
     }
 
+    @Transactional
     fun create(createdDto: ItemPostDto): ItemGetDto {
         if (createdDto.list == null) {
             throw RuntimeException("list field cannot be null")
@@ -45,6 +47,7 @@ class ItemService(val listRepo: ListRepo,
         return dto
     }
 
+    @Transactional
     fun update(id: UUID, updatedDto: ItemPostDto): ItemGetDto {
         val optionalItem = itemRepo.findById(id)
         if (!optionalItem.isPresent) {
@@ -62,6 +65,7 @@ class ItemService(val listRepo: ListRepo,
         return after
     }
 
+    @Transactional
     fun rank(id: UUID, op: RankOperation): ItemGetDto {
         val optionalItem = itemRepo.findById(id)
         if (!optionalItem.isPresent) {

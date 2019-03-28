@@ -21,18 +21,8 @@ constructor(private val itemService: ItemService) {
 
     @GetMapping("/api/v1/item/{itemId}")
     @ApiOperation("Retrieve an item")
-    fun getListItem(@PathVariable itemId: UUID?): ResponseEntity<ItemGetDto> {
-        if (itemId == null) {
-            return ResponseEntity.badRequest().build()
-        }
-
-        val optionalItem = itemService.findById(itemId)
-
-        if (!optionalItem.isPresent) {
-            return ResponseEntity.notFound().build()
-        }
-
-        return ResponseEntity.ok(optionalItem.get())
+    fun getListItem(@PathVariable itemId: UUID): ResponseEntity<ItemGetDto> {
+        return ResponseEntity.of(itemService.findById(itemId))
     }
 
     @PostMapping("/api/v1/item")
@@ -49,8 +39,7 @@ constructor(private val itemService: ItemService) {
     @ApiOperation("Update an item")
     fun updateItem(@PathVariable itemId: UUID,
                    @RequestBody dto: ItemPostDto): ResponseEntity<ItemGetDto> {
-        val updated = itemService.update(itemId, dto)
-        return ResponseEntity.ok(updated)
+        return ResponseEntity.ok(itemService.update(itemId, dto))
     }
 
     @PostMapping("/api/v1/item/{itemId}/rank/up")

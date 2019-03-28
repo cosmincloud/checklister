@@ -8,6 +8,7 @@ import cloud.cosmin.checklister.repo.ListRepo
 import cloud.cosmin.checklister.service.event.ListEventService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -48,6 +49,7 @@ class ListService @Autowired constructor(
         return Optional.of(dto)
     }
 
+    @Transactional
     fun create(listPostDto: ListPostDto): ListGetDto {
         val newList = ListEntity()
         newList.id = uuidService.get()
@@ -58,6 +60,7 @@ class ListService @Autowired constructor(
         return dto
     }
 
+    @Transactional
     fun update(id: UUID, listPostDto: ListPostDto): Optional<ListGetDto> {
         val optionalList = listRepo.findById(id)
         if (!optionalList.isPresent) {
