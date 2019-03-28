@@ -75,7 +75,7 @@ internal class ItemServiceTest {
         `when`(itemRepo.save(entity)).thenReturn(entity)
         `when`(converterService.itemDto(entity)).thenReturn(dto)
 
-        val itemUpdateDto = ItemPostDto(listId, "content", "contentType")
+        val itemUpdateDto = ItemPostDto(null, "content", "contentType")
 
         val itemService = ItemService(listRepo, itemRepo, converterService, eventService)
         val returned = itemService.update(id, itemUpdateDto)
@@ -222,7 +222,7 @@ internal class ItemServiceTest {
         `when`(converterService.itemDto(before)).thenReturn(beforeDto)
         `when`(converterService.itemDto(after)).thenReturn(afterDto)
 
-        val itemUpdateDto = ItemPostDto(listId, "content", "contentType")
+        val itemUpdateDto = ItemPostDto(null, "content", "contentType")
 
         val itemService = ItemService(listRepo, itemRepo, converterService, eventService)
         itemService.update(id, itemUpdateDto)
