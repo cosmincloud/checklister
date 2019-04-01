@@ -1,7 +1,16 @@
 rootProject.name = "checklister"
-include("checklister-dto",
-        "checklister-event",
-        "checklister-eventserde-json",
-        "checklister-eventsink-logger",
-        "checklister-eventsink-kafka",
-        "checklister-web")
+
+include("dto",
+        "event",
+        "eventserde-json",
+        "eventsink-logger",
+        "eventsink-kafka",
+        "web",
+        "history")
+
+for (project in rootProject.children) {
+    project.apply {
+        projectDir = file("subprojects/$name")
+        buildFileName = "$name.gradle.kts"
+    }
+}

@@ -30,5 +30,5 @@
 /.data/
 
 # Generated resources
-/checklister-web/src/main/resources/checklister-build.properties
-/checklister-web/src/main/resources/banner.txt
+/subprojects/web/src/main/resources/checklister-build.properties
+/subprojects/web/src/main/resources/banner.txt

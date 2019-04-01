@@ -34,9 +34,9 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // Checklister dependencies
-    implementation(project(":checklister-dto"))
-    implementation(project(":checklister-event"))
-    testImplementation(project(":checklister-eventserde-json"))
+    implementation(project(":dto"))
+    implementation(project(":event"))
+    testImplementation(project(":eventserde-json"))
 
     // log4j2
     implementation("org.apache.logging.log4j:log4j-api:2.11.2")
