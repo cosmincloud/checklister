@@ -29,4 +29,6 @@
 
 /.data/
 
-src/main/resources/checklister-build.properties
+# Generated resources
+/checklister-web/src/main/resources/checklister-build.properties
+/checklister-web/src/main/resources/banner.txt

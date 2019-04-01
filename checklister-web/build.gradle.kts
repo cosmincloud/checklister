@@ -44,7 +44,6 @@ tasks.test {
     useJUnitPlatform()
 }
 
-
 val integrationTestImplementation by configurations.getting {
     extendsFrom(configurations.testImplementation.get())
 }
@@ -60,15 +59,74 @@ val integrationTest = task<Test>("integrationTest") {
     shouldRunAfter("test")
 }
 
-val generateBuildConfigResourceTask by tasks.registering {
-    File("checklister-web/src/main/resources/checklister-build.properties")
-            .printWriter().use { out ->
-                out.println("version=${project.version}")
+val bannerFile = "${project.projectDir.canonicalPath}/src/main/resources/banner.txt"
+val generateBanner = tasks.register("generateBanner") {
+    outputs.file(bannerFile)
+
+    doLast {
+        val file = File(bannerFile)
+        val projectVersion = project.version.toString()
+
+        // TODO: Figure out how to do up-to-date checks in Kotlin DSL
+        val isUpToDate = file.exists() && file.readText().contains(projectVersion)
+
+        if (!isUpToDate) {
+            val versionLine = project.version.toString() + " ".repeat(32 - project.version.toString().length)
+            File(bannerFile).printWriter().use { out ->
+                out.println("""
+                    ╔═══════════════════════════════════╗
+                    ║  ╔═╗╦ ╦╔═╗╔═╗╦╔═╦  ╦╔═╗╔╦╗╔═╗╦═╗  ║
+                    ║  ║  ╠═╣║╣ ║  ╠╩╗║  ║╚═╗ ║ ║╣ ╠╦╝  ║
+                    ║  ╚═╝╩ ╩╚═╝╚═╝╩ ╩╩═╝╩╚═╝ ╩ ╚═╝╩╚═  ║
+                    ║  v${versionLine}║
+                    ╚═══════════════════════════════════╝
+                """.trimIndent())
             }
+        }
+    }
 }
 
-val compileKotlinTask = tasks.named("compileKotlin").get()
-compileKotlinTask.dependsOn(generateBuildConfigResourceTask)
+val cleanBanner = tasks.register("cleanBanner") {
+    destroyables.register(bannerFile)
+    doLast {
+        delete(bannerFile)
+    }
+}
+
+val buildPropertiesFile = "${project.projectDir.canonicalPath}/src/main/resources/checklister-build.properties"
+val generateBuildConfigResource = tasks.register("generateBuildConfigResource") {
+    val propertiesFile = File(buildPropertiesFile)
+    val projectVersion = project.version.toString()
+
+    // TODO: Figure out how to do up-to-date checks in Kotlin DSL
+    val isUpToDate = propertiesFile.exists() && propertiesFile.readText().contains(projectVersion)
+
+    if (!isUpToDate) {
+        outputs.file(buildPropertiesFile)
+
+        File(buildPropertiesFile).printWriter().use { out ->
+            out.println("version=${project.version}")
+        }
+    }
+}
+
+val cleanBuildConfigResource = tasks.register("cleanBuildConfigResource") {
+    destroyables.register(bannerFile)
+    doLast {
+        delete(bannerFile)
+    }
+}
+
+val processResources = tasks.named<ProcessResources>("processResources")
+processResources {
+    dependsOn(generateBanner, generateBuildConfigResource)
+}
+
+tasks {
+    clean {
+        dependsOn(cleanBanner, cleanBuildConfigResource)
+    }
+}
 
 dependencies {
     // Kotlin
