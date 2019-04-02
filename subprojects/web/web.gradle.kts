@@ -63,31 +63,36 @@ val bannerFile = "${project.projectDir.canonicalPath}/src/main/resources/banner.
 val generateBanner = tasks.register("generateBanner") {
     outputs.file(bannerFile)
 
-    doLast {
+    outputs.upToDateWhen {
         val file = File(bannerFile)
         val projectVersion = project.version.toString()
 
-        // TODO: Figure out how to do up-to-date checks in Kotlin DSL
-        val isUpToDate = file.exists() && file.readText().contains(projectVersion)
+        file.exists() && file.readText().contains(projectVersion)
+    }
 
-        if (!isUpToDate) {
-            val versionLine = project.version.toString() + " ".repeat(32 - project.version.toString().length)
-            File(bannerFile).printWriter().use { out ->
-                out.println("""
-                    ╔═══════════════════════════════════╗
-                    ║  ╔═╗╦ ╦╔═╗╔═╗╦╔═╦  ╦╔═╗╔╦╗╔═╗╦═╗  ║
-                    ║  ║  ╠═╣║╣ ║  ╠╩╗║  ║╚═╗ ║ ║╣ ╠╦╝  ║
-                    ║  ╚═╝╩ ╩╚═╝╚═╝╩ ╩╩═╝╩╚═╝ ╩ ╚═╝╩╚═  ║
-                    ║  v${versionLine}║
-                    ╚═══════════════════════════════════╝
-                """.trimIndent())
-            }
+    doLast {
+        val versionLine = project.version.toString() + " ".repeat(32 - project.version.toString().length)
+        File(bannerFile).printWriter().use { out ->
+            out.println("""
+                ╔═══════════════════════════════════╗
+                ║  ╔═╗╦ ╦╔═╗╔═╗╦╔═╦  ╦╔═╗╔╦╗╔═╗╦═╗  ║
+                ║  ║  ╠═╣║╣ ║  ╠╩╗║  ║╚═╗ ║ ║╣ ╠╦╝  ║
+                ║  ╚═╝╩ ╩╚═╝╚═╝╩ ╩╩═╝╩╚═╝ ╩ ╚═╝╩╚═  ║
+                ║  v${versionLine}║
+                ╚═══════════════════════════════════╝
+            """.trimIndent())
         }
     }
 }
 
 val cleanBanner = tasks.register("cleanBanner") {
     destroyables.register(bannerFile)
+
+    outputs.upToDateWhen {
+        val file = File(bannerFile)
+        !file.exists()
+    }
+
     doLast {
         delete(bannerFile)
     }
@@ -133,7 +138,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // Spring Boot
-    implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:2.1.1.RELEASE"))
+    implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:2.1.3.RELEASE"))
 
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")
