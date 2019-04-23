@@ -1,7 +1,9 @@
 package cloud.cosmin.checklister.dao
 
 import org.hibernate.annotations.DynamicInsert
-
+import java.time.OffsetDateTime
+import java.util.Objects
+import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -10,8 +12,6 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
-import java.util.Objects
-import java.util.UUID
 
 @Entity
 @DynamicInsert
@@ -33,6 +33,12 @@ class ItemEntity {
     @ManyToOne
     @JoinColumn(nullable = false)
     var list: ListEntity? = null
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    var createdAt: OffsetDateTime? = null
+
+    @Column(name = "last_modified", nullable = false)
+    var lastModified: OffsetDateTime? = null
 
     override fun equals(o: Any?): Boolean {
         if (this === o) return true

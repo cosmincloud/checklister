@@ -1,5 +1,6 @@
 package cloud.cosmin.checklister.lib.dto
 
+import java.time.OffsetDateTime
 import java.util.*
 
 object ParsingFunctions {
@@ -17,5 +18,9 @@ object ParsingFunctions {
         } else {
             return null
         }
+    }
+
+    fun parseOffsetdDateTime(str: String?): OffsetDateTime? {
+        return OffsetDateTime.parse(str)
     }
 }

@@ -9,6 +9,7 @@ import cloud.cosmin.checklister.repo.ListRepo
 import cloud.cosmin.checklister.service.event.ItemEventService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.OffsetDateTime
 import java.util.*
 
 @Service
@@ -40,9 +41,11 @@ class ItemService(val listRepo: ListRepo,
         newItem.contentType = createdDto.contentType
         newItem.rank = (list.items!!.size + 1) * 2
         newItem.list = list
+        newItem.createdAt = OffsetDateTime.now()
+        newItem.lastModified = OffsetDateTime.now()
 
-        val savedItem = itemRepo.save(newItem)
-        val dto = converterService.itemDto(savedItem)
+        val insertedItem = itemRepo.save(newItem)
+        val dto = converterService.itemDto(insertedItem)
         itemEventService.create(dto)
         return dto
     }
@@ -65,6 +68,7 @@ class ItemService(val listRepo: ListRepo,
         }
         item.content = dto.content
         item.contentType = dto.contentType
+        item.lastModified = OffsetDateTime.now()
 
         val saved = itemRepo.save(item)
         val after = converterService.itemDto(saved)
@@ -82,13 +86,16 @@ class ItemService(val listRepo: ListRepo,
         val item: ItemEntity = optionalItem.get()
         val before = converterService.itemDto(item)
 
+        val modifiedAt = OffsetDateTime.now()
         val updated = when(op) {
-            RankOperation.UP     -> itemRepo.rankUp(id)
-            RankOperation.DOWN   -> itemRepo.rankDown(id)
-            RankOperation.TOP    -> itemRepo.rankTop(id)
-            RankOperation.BOTTOM -> itemRepo.rankBottom(id)
+            RankOperation.UP     -> itemRepo.rankUp(id, modifiedAt)
+            RankOperation.DOWN   -> itemRepo.rankDown(id, modifiedAt)
+            RankOperation.TOP    -> itemRepo.rankTop(id, modifiedAt)
+            RankOperation.BOTTOM -> itemRepo.rankBottom(id, modifiedAt)
         }
 
+        // this is a hack to avoid another database roundtrip
+        updated.lastModified = modifiedAt
         val after = converterService.itemDto(updated)
         itemEventService.rank(op, before, after)
         return after

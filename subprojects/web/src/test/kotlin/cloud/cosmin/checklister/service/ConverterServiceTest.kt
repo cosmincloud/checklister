@@ -4,7 +4,8 @@ import cloud.cosmin.checklister.dao.ItemEntity
 import cloud.cosmin.checklister.dao.ListEntity
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.*
+import java.time.OffsetDateTime
+import java.util.UUID
 
 class ConverterServiceTest {
     @Test
@@ -34,6 +35,8 @@ class ConverterServiceTest {
         item.content = "content"
         item.contentType = "text/plain"
         item.rank = 0
+        item.createdAt = OffsetDateTime.now()
+        item.lastModified = OffsetDateTime.now()
 
         val itemDto = svc.itemDto(item)
         assertEquals(item.id, itemDto.id)
@@ -41,5 +44,7 @@ class ConverterServiceTest {
         assertEquals("content", itemDto.content)
         assertEquals("text/plain", itemDto.contentType)
         assertEquals(Integer.valueOf(0), itemDto.rank)
+        assertEquals(item.createdAt, itemDto.createdAt)
+        assertEquals(item.lastModified, itemDto.lastModified)
     }
 }

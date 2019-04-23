@@ -23,7 +23,9 @@ class ConverterService {
                 itemEntity.list?.id,
                 itemEntity.content,
                 itemEntity.contentType,
-                itemEntity.rank
+                itemEntity.rank,
+                itemEntity.createdAt!!,
+                itemEntity.lastModified!!
         )
     }
 
