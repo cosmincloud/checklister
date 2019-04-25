@@ -32,3 +32,6 @@
 # Generated resources
 /subprojects/web/src/main/resources/checklister-build.properties
 /subprojects/web/src/main/resources/banner.txt
+
+# KotlinTest
+/subprojects/integrationTest/.kotlintest

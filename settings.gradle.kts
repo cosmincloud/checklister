@@ -6,7 +6,8 @@ include("dto",
         "eventsink-logger",
         "eventsink-kafka",
         "web",
-        "history")
+        "history",
+        "integrationTest")
 
 for (project in rootProject.children) {
     project.apply {

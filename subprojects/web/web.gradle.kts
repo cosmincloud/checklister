@@ -150,7 +150,7 @@ dependencies {
     // database
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.hibernate:hibernate-java8")
-    runtime("org.postgresql:postgresql:42.2.2")
+    runtimeOnly("org.postgresql:postgresql:42.2.2")
     implementation("org.flywaydb:flyway-core:5.0.7")
 
     implementation("org.bitbucket.cowwoc:requirements-core:4.0.4-RC")
