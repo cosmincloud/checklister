@@ -7,21 +7,25 @@ A backend service for managing checklists.
 The Checklister application is split up into several subprojects,
 contained in the `subprojects` directory.
 
-## Usage
-
-Running:
+## Running
 
 ```
-docker-compose down                && \
-docker-compose up -d db            && \
-sleep 10                           && \
-./gradlew clean build              && \
-docker-compose down                && \
-docker-compose up -d --build       && \
-docker-compose logs -f checklister
+./gradlew composeUp
 ```
 
-Publishing:
+Checklister will be available on [localhost:8180](http://localhost:8180).
+
+## Integration tests
+
+Running the integration tests via the Gradle task:
+
+```
+./gradlew :integrationTest:test
+```
+
+
+## Publishing
+
 ```
 ./gradlew clean build :checklister-web:bootJar
 docker build -t blacktower:5000/cosapps/checklister:<version> .
