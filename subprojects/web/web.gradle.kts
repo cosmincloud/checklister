@@ -116,9 +116,9 @@ val generateBuildConfigResource = tasks.register("generateBuildConfigResource") 
 }
 
 val cleanBuildConfigResource = tasks.register("cleanBuildConfigResource") {
-    destroyables.register(bannerFile)
+    destroyables.register(buildPropertiesFile)
     doLast {
-        delete(bannerFile)
+        delete(buildPropertiesFile)
     }
 }
 
@@ -197,3 +197,4 @@ dependencies {
     implementation(project(":eventsink-kafka"))
     implementation(project(":eventsink-logger"))
 }
+
