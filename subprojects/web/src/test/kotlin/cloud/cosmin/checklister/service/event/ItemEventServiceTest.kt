@@ -9,11 +9,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
+import java.time.OffsetDateTime
 import java.util.*
 
 @DisplayName("ItemEventService")
 internal class ItemEventServiceTest {
     private val eventId = UUID.randomUUID()
+    private val date = OffsetDateTime.now()
 
     private fun getUuidService(): UuidService {
         val uuidService = mock(UuidService::class.java)
@@ -37,8 +39,8 @@ internal class ItemEventServiceTest {
     fun testUpdateEvent() {
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
-        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
-        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
+        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
         val event = Event.update(eventId, "ITEM_UPDATE", beforeDto, afterDto)
 
         `when`(eventSink.accept(event)).thenReturn(byteArray)
@@ -54,8 +56,8 @@ internal class ItemEventServiceTest {
     fun testRankUp() {
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
-        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
-        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
+        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
         val event = Event.update(eventId, "ITEM_RANK_UP", beforeDto, afterDto)
 
         `when`(eventSink.accept(event)).thenReturn(byteArray)
@@ -71,8 +73,8 @@ internal class ItemEventServiceTest {
     fun testRankDown() {
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
-        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
-        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
+        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
         val event = Event.update(eventId, "ITEM_RANK_DOWN", beforeDto, afterDto)
 
         `when`(eventSink.accept(event)).thenReturn(byteArray)
@@ -88,8 +90,8 @@ internal class ItemEventServiceTest {
     fun testRankTop() {
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
-        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
-        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
+        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
         val event = Event.update(eventId, "ITEM_RANK_TOP", beforeDto, afterDto)
 
         `when`(eventSink.accept(event)).thenReturn(byteArray)
@@ -105,8 +107,8 @@ internal class ItemEventServiceTest {
     fun testRankBottom() {
         val id = UUID.randomUUID()
         val listId = UUID.randomUUID()
-        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1)
-        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1)
+        val beforeDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
+        val afterDto = ItemGetDto(id, listId, "content", "contentType", 1, date, date)
         val event = Event.update(eventId, "ITEM_RANK_BOTTOM", beforeDto, afterDto)
 
         `when`(eventSink.accept(event)).thenReturn(byteArray)

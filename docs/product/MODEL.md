@@ -2,20 +2,26 @@
 
 ## Objects
 
-* list
-* item
+* list - an uniquely identifiable ordered enumeration of items
+* item - a piece of content as part of a list
 
 ## list
 
-* id: Long
-* title: String
-* size: Long - number of items in the list
+### list: fields
+
+* id: uuid - a unique UUID for this list
+* title: varchar(255) - a short title for the list
+
+### list: operations
+
+* size: int - returns the number of items currently part of this list
+* items: list(item) - return a list of the items that are currently part of this list
 
 ## item
 
 * id: Long
-* content: String
-* rank: Long
+* content: String - 
+* rank: int - the rank of the item in the list
 
 # API
 
