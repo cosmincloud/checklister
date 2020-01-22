@@ -4,7 +4,7 @@ import cloud.cosmin.checklister.entity.ListEntity
 import cloud.cosmin.checklister.lib.dto.ListGetDto
 import cloud.cosmin.checklister.lib.dto.ListPostDto
 import cloud.cosmin.checklister.lib.dto.ListWithItemsDto
-import cloud.cosmin.checklister.repo.ListRepo
+import cloud.cosmin.checklister.repository.ListRepository
 import cloud.cosmin.checklister.service.event.ListEventService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -13,7 +13,7 @@ import java.util.*
 
 @Service
 class ListService @Autowired constructor(
-        private val listRepo: ListRepo,
+        private val listRepo: ListRepository,
         private val converterService: ConverterService,
         private val uuidService: UuidService,
         private val listEventService: ListEventService

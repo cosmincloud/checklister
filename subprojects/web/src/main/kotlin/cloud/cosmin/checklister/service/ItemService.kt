@@ -4,8 +4,8 @@ import cloud.cosmin.checklister.entity.ItemEntity
 import cloud.cosmin.checklister.lib.dto.ItemGetDto
 import cloud.cosmin.checklister.lib.dto.ItemPostDto
 import cloud.cosmin.checklister.lib.event.model.RankOperation
-import cloud.cosmin.checklister.repo.ItemRepo
-import cloud.cosmin.checklister.repo.ListRepo
+import cloud.cosmin.checklister.repository.ItemRepository
+import cloud.cosmin.checklister.repository.ListRepository
 import cloud.cosmin.checklister.service.event.ItemEventService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,8 +13,8 @@ import java.time.OffsetDateTime
 import java.util.*
 
 @Service
-class ItemService(val listRepo: ListRepo,
-                  val itemRepo: ItemRepo,
+class ItemService(val listRepo: ListRepository,
+                  val itemRepo: ItemRepository,
                   val converterService: ConverterService,
                   val itemEventService: ItemEventService) {
     fun findById(id: UUID): Optional<ItemGetDto> {

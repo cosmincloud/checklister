@@ -1,4 +1,4 @@
-package cloud.cosmin.checklister.repo
+package cloud.cosmin.checklister.repository
 
 import cloud.cosmin.checklister.entity.ItemEntity
 import org.springframework.data.jpa.repository.Query
@@ -7,7 +7,7 @@ import java.time.OffsetDateTime
 
 import java.util.UUID
 
-interface ItemRepo : PagingAndSortingRepository<ItemEntity, UUID> {
+interface ItemRepository : PagingAndSortingRepository<ItemEntity, UUID> {
     @Query(nativeQuery = true, value = "SELECT * FROM rank_up(?1, ?2)")
     fun rankUp(itemId: UUID, modified_at: OffsetDateTime): ItemEntity
 

@@ -1,4 +1,4 @@
-package cloud.cosmin.checklister.repo
+package cloud.cosmin.checklister.repository
 
 import cloud.cosmin.checklister.entity.ItemEntity
 import cloud.cosmin.checklister.entity.ListEntity
@@ -8,9 +8,9 @@ import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 
-class ItemRepoTest {
-    private val listRepo: ListRepo? = null
-    private val itemRepo: ItemRepo? = null
+class ItemRepositoryTest {
+    private val listRepo: ListRepository? = null
+    private val itemRepo: ItemRepository? = null
 
     @Test
     @Ignore

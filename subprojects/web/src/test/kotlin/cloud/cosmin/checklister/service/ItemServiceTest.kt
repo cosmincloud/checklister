@@ -5,8 +5,8 @@ import cloud.cosmin.checklister.entity.ListEntity
 import cloud.cosmin.checklister.lib.dto.ItemGetDto
 import cloud.cosmin.checklister.lib.dto.ItemPostDto
 import cloud.cosmin.checklister.lib.event.model.RankOperation
-import cloud.cosmin.checklister.repo.ItemRepo
-import cloud.cosmin.checklister.repo.ListRepo
+import cloud.cosmin.checklister.repository.ItemRepository
+import cloud.cosmin.checklister.repository.ListRepository
 import cloud.cosmin.checklister.service.event.ItemEventService
 import org.junit.Ignore
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -22,8 +22,8 @@ import java.util.*
 
 @DisplayName("ItemService")
 internal class ItemServiceTest {
-    private val listRepo = mock(ListRepo::class.java)
-    private val itemRepo = mock(ItemRepo::class.java)
+    private val listRepo = mock(ListRepository::class.java)
+    private val itemRepo = mock(ItemRepository::class.java)
     private val converterService = mock(ConverterService::class.java)
     private val eventService = mock(ItemEventService::class.java)
     private val date = OffsetDateTime.now()
@@ -149,7 +149,7 @@ internal class ItemServiceTest {
     @Test @DisplayName("should rank item top")
     @Disabled
     fun testRankTop() {
-        val itemRepo = mock(ItemRepo::class.java)
+        val itemRepo = mock(ItemRepository::class.java)
         val converterService = mock(ConverterService::class.java)
         val eventService = mock(ItemEventService::class.java)
 
