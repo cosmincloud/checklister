@@ -1,4 +1,4 @@
-package cloud.cosmin.checklister.rest
+package cloud.cosmin.checklister.controller
 
 import cloud.cosmin.checklister.lib.dto.EventDto
 import cloud.cosmin.checklister.service.event.EventService

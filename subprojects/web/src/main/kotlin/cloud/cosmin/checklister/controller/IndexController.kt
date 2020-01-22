@@ -1,4 +1,4 @@
-package cloud.cosmin.checklister.rest
+package cloud.cosmin.checklister.controller
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
