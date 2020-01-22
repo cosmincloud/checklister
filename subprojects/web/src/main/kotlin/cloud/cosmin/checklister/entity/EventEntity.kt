@@ -1,4 +1,4 @@
-package cloud.cosmin.checklister.dao
+package cloud.cosmin.checklister.entity
 
 import cloud.cosmin.checklister.lib.event.Event
 import org.hibernate.annotations.DynamicInsert

@@ -1,6 +1,6 @@
 package cloud.cosmin.checklister.service
 
-import cloud.cosmin.checklister.dao.ItemEntity
+import cloud.cosmin.checklister.entity.ItemEntity
 import cloud.cosmin.checklister.lib.dto.ItemGetDto
 import cloud.cosmin.checklister.lib.dto.ItemPostDto
 import cloud.cosmin.checklister.lib.event.model.RankOperation

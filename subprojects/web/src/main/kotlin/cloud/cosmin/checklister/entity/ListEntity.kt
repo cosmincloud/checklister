@@ -1,4 +1,4 @@
-package cloud.cosmin.checklister.dao
+package cloud.cosmin.checklister.entity
 
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode

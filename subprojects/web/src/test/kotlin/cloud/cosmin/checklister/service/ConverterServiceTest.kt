@@ -1,7 +1,7 @@
 package cloud.cosmin.checklister.service
 
-import cloud.cosmin.checklister.dao.ItemEntity
-import cloud.cosmin.checklister.dao.ListEntity
+import cloud.cosmin.checklister.entity.ItemEntity
+import cloud.cosmin.checklister.entity.ListEntity
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.OffsetDateTime

@@ -1,7 +1,7 @@
 package cloud.cosmin.checklister.service.event
 
 import cloud.cosmin.checklister.config.EventConfig
-import cloud.cosmin.checklister.dao.EventEntity
+import cloud.cosmin.checklister.entity.EventEntity
 import cloud.cosmin.checklister.lib.dto.EventDto
 import cloud.cosmin.checklister.lib.event.Event
 import cloud.cosmin.checklister.repo.EventRepo

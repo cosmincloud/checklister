@@ -1,6 +1,6 @@
 package cloud.cosmin.checklister.repo
 
-import cloud.cosmin.checklister.dao.ListEntity
+import cloud.cosmin.checklister.entity.ListEntity
 import org.junit.Assert.*
 import org.junit.Ignore
 import org.junit.Test
