@@ -27,7 +27,16 @@ Running the integration tests via the Gradle task:
 ## Publishing
 
 ```
-./gradlew clean build :checklister-web:bootJar
+./gradlew clean build :web:bootJar
 docker build -t blacktower:5000/cosapps/checklister:<version> .
-docker push docker build -t blacktower:5000/cosapps/checklister:<version>
+docker push blacktower:5000/cosapps/checklister:<version>
 ```
+
+## Generating the Client Library
+
+```
+./gradlew :client:openApiGenerate
+cd subprojects/client/build/openapi
+cp ../../build.gradle.custom build.gradle
+chmod a+x gradlew
+./gradlew
