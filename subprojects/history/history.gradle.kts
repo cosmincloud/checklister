@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("java")
     id("org.springframework.boot") version "2.1.3.RELEASE"
-    kotlin("jvm") version "1.3.11"
+    kotlin("jvm") version "1.3.72"
 }
 
 repositories {
@@ -40,7 +40,7 @@ dependencies {
     // database
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.hibernate:hibernate-java8")
-    runtime("org.postgresql:postgresql:42.2.2")
+    runtimeOnly("org.postgresql:postgresql:42.2.2")
     implementation("org.flywaydb:flyway-core:5.0.7")
     
     // because of Java 9+
