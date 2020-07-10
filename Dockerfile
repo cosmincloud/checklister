@@ -1,4 +1,4 @@
-FROM openjdk:10-jre
+FROM adoptopenjdk:11-jre-hotspot
 
 EXPOSE 8080
 CMD ["java", "-jar", "/app.jar"]
