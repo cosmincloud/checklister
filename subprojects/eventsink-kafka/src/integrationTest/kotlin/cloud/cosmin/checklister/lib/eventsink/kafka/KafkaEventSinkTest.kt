@@ -1,7 +1,7 @@
 package cloud.cosmin.checklister.lib.eventsink.kafka
 
 import cloud.cosmin.checklister.lib.dto.ListGetDto
-import cloud.cosmin.checklister.lib.event.model.ListCreateEvent
+import cloud.cosmin.checklister.lib.event.Event
 import cloud.cosmin.checklister.lib.eventserde.json.JsonEventSerde
 import org.apache.kafka.clients.consumer.ConsumerConfig.*
 import org.apache.kafka.clients.consumer.KafkaConsumer
@@ -43,8 +43,8 @@ class KafkaEventSinkTest {
 
         val eventUuid = UUID.randomUUID()
         val listId = UUID.randomUUID()
-        val listDto = ListGetDto(listId, "list title")
-        val event = ListCreateEvent(eventUuid, listDto)
+        // TODO: Fix this test.
+        val event = Event(eventUuid, "list_create", null, null)
         sink.accept(event)
 
         val recordsList = consumer.poll(pollTimeout).toList()

@@ -1,7 +1,9 @@
 package cloud.cosmin.checklister.lib.dto
 
+import kotlinx.serialization.Serializable
 import java.util.*
 
+@Serializable
 data class ListPostDto(
         val title: String
 ) : Mappable {

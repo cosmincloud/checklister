@@ -1,12 +1,18 @@
+@file:UseSerializers(UUIDSerializer::class, OffsetDateTimeSerializer::class)
 package cloud.cosmin.checklister.lib.dto
 
 import cloud.cosmin.checklister.lib.dto.ParsingFunctions.parseInt
 import cloud.cosmin.checklister.lib.dto.ParsingFunctions.parseUUID
+import cloud.cosmin.checklister.lib.dto.internal.OffsetDateTimeSerializer
+import cloud.cosmin.checklister.lib.dto.internal.UUIDSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.HashMap
 import java.util.UUID
 
+@Serializable
 data class ItemGetDto(val id: UUID?,
                       val list: UUID?,
                       val content: String?,
@@ -50,12 +56,10 @@ data class ItemGetDto(val id: UUID?,
         if (rank != null) {
             map.put("rank", rank.toString())
         }
-        if (createdAt != null) {
-            map.put("createdAt", createdAt.format(DateTimeFormatter.ISO_ZONED_DATE_TIME))
-        }
-        if (lastModified != null) {
-            map.put("lastModified", lastModified.format(DateTimeFormatter.ISO_ZONED_DATE_TIME))
-        }
+
+        map.put("createdAt", createdAt.format(DateTimeFormatter.ISO_ZONED_DATE_TIME))
+        map.put("lastModified", lastModified.format(DateTimeFormatter.ISO_ZONED_DATE_TIME))
+
         return map
     }
 }

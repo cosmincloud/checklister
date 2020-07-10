@@ -1,8 +1,13 @@
+@file:UseSerializers(UUIDSerializer::class)
 package cloud.cosmin.checklister.lib.dto
 
 import cloud.cosmin.checklister.lib.dto.ParsingFunctions.parseUUID
+import cloud.cosmin.checklister.lib.dto.internal.UUIDSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 import java.util.*
 
+@Serializable
 data class ItemPostDto(
         val list: UUID?,
         val content: String?,
