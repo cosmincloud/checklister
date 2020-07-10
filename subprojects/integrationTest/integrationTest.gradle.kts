@@ -3,6 +3,8 @@ plugins {
     kotlin("jvm") version "1.3.72"
     // https://github.com/avast/gradle-docker-compose-plugin
     id("com.avast.gradle.docker-compose") version "0.9.2"
+    // https://github.com/kotest/kotest-gradle-plugin
+    id("io.kotlintest") version "1.1.1"
 }
 
 repositories {
@@ -28,8 +30,10 @@ dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
 
-    // KotlinTest: https://github.com/kotlintest/kotlintest
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
+    // KoTest: https://github.com/kotest/kotest
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.1.1")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.1.1")
+    testImplementation("io.kotest:kotest-runner-console-jvm:4.1.1")
 
     // Fuel HTTP library: https://github.com/kittinunf/fuel
     testImplementation("com.github.kittinunf.fuel:fuel:2.0.1")
