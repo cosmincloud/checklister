@@ -19,4 +19,7 @@ interface ItemRepository : PagingAndSortingRepository<ItemEntity, UUID> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM rank_bottom(?1, ?2)")
     fun rankBottom(itemId: UUID,  modified_at: OffsetDateTime): ItemEntity
+
+    @Query(nativeQuery = true, value = "UPDATE item SET list_id = ?2 WHERE list_id = ?1")
+    fun moveItems(from: UUID, to: UUID)
 }

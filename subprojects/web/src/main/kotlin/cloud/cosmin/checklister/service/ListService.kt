@@ -1,9 +1,11 @@
 package cloud.cosmin.checklister.service
 
+import arrow.core.Either
 import cloud.cosmin.checklister.entity.ListEntity
 import cloud.cosmin.checklister.lib.dto.ListGetDto
 import cloud.cosmin.checklister.lib.dto.ListPostDto
 import cloud.cosmin.checklister.lib.dto.ListWithItemsDto
+import cloud.cosmin.checklister.repository.ItemRepository
 import cloud.cosmin.checklister.repository.ListRepository
 import cloud.cosmin.checklister.service.event.ListEventService
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +16,7 @@ import java.util.*
 @Service
 class ListService @Autowired constructor(
         private val listRepo: ListRepository,
+        private val itemRepo: ItemRepository,
         private val converterService: ConverterService,
         private val uuidService: UuidService,
         private val listEventService: ListEventService
@@ -41,7 +44,7 @@ class ListService @Autowired constructor(
                 ArrayList()
         )
         dto.items = ArrayList()
-        for (item in list.items!!) {
+        for (item in list.items) {
             val itemDto = converterService.itemDto(item)
             dto.items!!.add(itemDto)
         }
@@ -75,5 +78,29 @@ class ListService @Autowired constructor(
         val afterDto = converterService.listDto(saved)
         listEventService.update(beforeDto, afterDto)
         return Optional.of(afterDto)
+    }
+
+    /**
+     * Merge two lists together, moving the items from the
+     * other list into the existing list.
+     */
+    @Transactional
+    fun merge(existingListId: UUID, otherListId: UUID): Either<RuntimeException, UUID> {
+        val existingListMaybe = listRepo.findById(existingListId)
+        if (existingListMaybe.isEmpty) {
+            return Either.Left(RuntimeException("List does not exist, uuid: $existingListId"))
+        }
+
+        val existingList = existingListMaybe.get()
+
+        val otherListMaybe = listRepo.findById(otherListId)
+        if (otherListMaybe.isEmpty) {
+            return Either.Left(RuntimeException("List does not exist, uuid: $otherListId"))
+        }
+
+        val otherList = otherListMaybe.get()
+
+        itemRepo.moveItems(otherList.id!!, existingList.id!!)
+        return Either.right(existingList.id!!)
     }
 }

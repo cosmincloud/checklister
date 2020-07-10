@@ -17,12 +17,12 @@ class ListEntity {
     @OneToMany(mappedBy = "list")
     @Fetch(FetchMode.JOIN)
     @OrderBy("rank")
-    var items: List<ItemEntity>? = null
+    var items: List<ItemEntity> = emptyList()
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val that = o as ListEntity?
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val that = other as ListEntity?
         return id == that!!.id &&
                 title == that.title &&
                 items == that.items
