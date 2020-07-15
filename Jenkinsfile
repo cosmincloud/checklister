@@ -1,4 +1,4 @@
-node (label: 'jdk8') {
+node (label: 'jdk11') {
   stage("scm") {
     cleanWs()
     checkout scm
