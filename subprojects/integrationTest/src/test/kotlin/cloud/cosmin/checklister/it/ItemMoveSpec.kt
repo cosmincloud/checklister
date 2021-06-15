@@ -4,8 +4,8 @@ import cloud.cosmin.checklister.it.TestHelper.post
 import cloud.cosmin.checklister.it.TestHelper.put
 import cloud.cosmin.checklister.lib.dto.ItemPostDto
 import cloud.cosmin.checklister.lib.dto.ListPostDto
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.WordSpec
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.shouldBe
 
 class ItemMoveSpec: WordSpec({
     "Checklister" should {

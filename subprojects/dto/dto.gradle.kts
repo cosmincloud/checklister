@@ -11,8 +11,8 @@ repositories {
     mavenCentral()
 }
 
-val test by tasks.getting(Test::class) {
-    useJUnitPlatform { }
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -23,7 +23,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
 
     // KoTest: https://github.com/kotest/kotest
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.1.1")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:4.1.1")
-    testImplementation("io.kotest:kotest-runner-console-jvm:4.1.1")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.6.0")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.0")
+    //testImplementation("io.kotest:kotest-runner-console-jvm:4.6.0")
 }

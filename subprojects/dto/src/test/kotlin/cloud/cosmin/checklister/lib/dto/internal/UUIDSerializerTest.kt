@@ -10,11 +10,11 @@ import java.util.*
 class UUIDSerializerTest : WordSpec({
     "UUIDSerializer" should {
         "should read back its own serialization" {
-            val json = Json(JsonConfiguration.Stable)
+            val json = Json.Default
             val uuid = UUID.fromString("fb54a699-8d73-4b41-87bb-32b20ec15618")
-            val jsonData = json.stringify(UUIDSerializer, uuid)
+            val jsonData = json.encodeToString(UUIDSerializer, uuid)
             jsonData.shouldBe("\"fb54a699-8d73-4b41-87bb-32b20ec15618\"")
-            val newUUID = json.parse(UUIDSerializer, jsonData)
+            val newUUID = json.decodeFromString(UUIDSerializer, jsonData)
             uuid.shouldBeEqualComparingTo(newUUID)
         }
     }

@@ -3,10 +3,6 @@ package cloud.cosmin.checklister.it
 import cloud.cosmin.checklister.lib.dto.ItemGetDto
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.jackson.responseObject
-import io.kotlintest.matchers.boolean.shouldBeTrue
-import io.kotlintest.matchers.string.shouldMatch
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.WordSpec
 import cloud.cosmin.checklister.it.TestHelper.baseUrl
 import cloud.cosmin.checklister.it.TestHelper.mapper
 import cloud.cosmin.checklister.it.TestHelper.toJson
@@ -14,6 +10,10 @@ import cloud.cosmin.checklister.it.TestHelper.post
 import cloud.cosmin.checklister.lib.dto.ItemPostDto
 import cloud.cosmin.checklister.lib.dto.ListPostDto
 import com.github.kittinunf.fuel.core.extensions.jsonBody
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldMatch
 
 class TimestampSpec : WordSpec({
     val timestampRegex = Regex("[1-9][0-9]{3}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}Z")
