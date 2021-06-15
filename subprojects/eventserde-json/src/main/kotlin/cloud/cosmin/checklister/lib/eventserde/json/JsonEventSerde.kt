@@ -11,10 +11,10 @@ class JsonEventSerde : EventSerializer, EventDeserializer {
     }
 
     override fun serialize(event: Event): ByteArray {
-        return mapper.writeValueAsBytes(event)!!
+        return mapper.writeValueAsBytes(event)
     }
 
-    override fun <T : Event> deserialize(byteArray: ByteArray, cls: Class<T>): T {
+    override fun deserialize(byteArray: ByteArray, cls: Class<Event>): Event {
         return mapper.readValue(byteArray, cls)
     }
 }

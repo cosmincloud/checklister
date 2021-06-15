@@ -1,8 +1,8 @@
 plugins {
     `java-library`
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm")
     // Kotlin Serialization: https://github.com/Kotlin/kotlinx.serialization
-    kotlin("plugin.serialization") version "1.3.72"
+    kotlin("plugin.serialization")
     // https://github.com/kotest/kotest-gradle-plugin
     id("io.kotlintest") version "1.1.1"
 }
@@ -20,7 +20,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // Kotlin Serialization: https://github.com/Kotlin/kotlinx.serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
 
     // KoTest: https://github.com/kotest/kotest
     testImplementation("io.kotest:kotest-runner-junit5-jvm:4.1.1")

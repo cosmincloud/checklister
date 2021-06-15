@@ -1,15 +1,17 @@
 package cloud.cosmin.checklister.lib.dto.internal
 
-import kotlinx.serialization.Decoder
-import kotlinx.serialization.Encoder
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 /**
  * A kotlinx.serialization serializer for java.time.OffsetDateTime.
  */
+@ExperimentalSerializationApi
 @Serializer(forClass = OffsetDateTime::class)
 object OffsetDateTimeSerializer: KSerializer<OffsetDateTime> {
     private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME

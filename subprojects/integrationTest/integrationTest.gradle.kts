@@ -1,8 +1,8 @@
 plugins {
     `java-library`
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm")
     // https://github.com/avast/gradle-docker-compose-plugin
-    id("com.avast.gradle.docker-compose") version "0.9.2"
+    id("com.avast.gradle.docker-compose") version "0.14.3"
     // https://github.com/kotest/kotest-gradle-plugin
     id("io.kotlintest") version "1.1.1"
 }

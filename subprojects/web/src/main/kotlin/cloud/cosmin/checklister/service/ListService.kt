@@ -101,6 +101,6 @@ class ListService @Autowired constructor(
         val otherList = otherListMaybe.get()
 
         itemRepo.moveItems(otherList.id!!, existingList.id!!)
-        return Either.right(existingList.id!!)
+        return Either.Right(existingList.id!!)
     }
 }
