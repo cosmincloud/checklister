@@ -3,6 +3,7 @@ package cloud.cosmin.checklister.service
 import cloud.cosmin.checklister.entity.ListEntity
 import cloud.cosmin.checklister.lib.dto.ListGetDto
 import cloud.cosmin.checklister.lib.dto.ListPostDto
+import cloud.cosmin.checklister.repository.ItemRepository
 import cloud.cosmin.checklister.repository.ListRepository
 import cloud.cosmin.checklister.service.event.ListEventService
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -15,12 +16,13 @@ import java.util.*
 @DisplayName("ListService")
 internal class ListServiceTest {
     val listRepo = mock(ListRepository::class.java)
+    val itemRepo = mock(ItemRepository::class.java)
     val converterService = ConverterService()
     val uuidService = mock(UuidService::class.java)
     val listEventService = mock(ListEventService::class.java)
 
     fun createListService(): ListService {
-        return ListService(listRepo, converterService, uuidService, listEventService)
+        return ListService(listRepo, itemRepo, converterService, uuidService, listEventService)
     }
 
     @BeforeEach
