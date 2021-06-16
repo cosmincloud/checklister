@@ -35,3 +35,5 @@
 
 # KotlinTest
 /subprojects/integrationTest/.kotlintest
+
+/openapi.json

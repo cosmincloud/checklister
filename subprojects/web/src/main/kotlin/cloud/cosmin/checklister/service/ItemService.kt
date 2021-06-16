@@ -39,7 +39,7 @@ class ItemService(val listRepo: ListRepository,
         val newItem = ItemEntity()
         newItem.content = createdDto.content
         newItem.contentType = createdDto.contentType
-        newItem.rank = (list.items!!.size + 1) * 2
+        newItem.rank = (list.items.size + 1) * 2
         newItem.list = list
         newItem.createdAt = OffsetDateTime.now()
         newItem.lastModified = OffsetDateTime.now()

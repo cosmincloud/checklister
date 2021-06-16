@@ -5,24 +5,24 @@ import java.net.URI
 plugins {
     id("java")
     id("org.springframework.boot") version "2.1.3.RELEASE"
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm")
     // Annotation Processing with Kotlin: https://kotlinlang.org/docs/reference/kapt.html
-    kotlin("kapt") version "1.3.72"
+    kotlin("kapt")
     // https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support
-    id("org.jetbrains.kotlin.plugin.spring") version "1.3.72"
+    id("org.jetbrains.kotlin.plugin.spring")
     // https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.3.72"
+    id("org.jetbrains.kotlin.plugin.jpa")
     // https://github.com/swagger-api/swagger-core/tree/master/modules/swagger-gradle-plugin
-    id("io.swagger.core.v3.swagger-gradle-plugin") version "2.0.6"
+    //id("io.swagger.core.v3.swagger-gradle-plugin") version "2.1.9"
 }
 
 repositories {
     mavenCentral()
     jcenter()
 
-    maven {
-        url = URI.create("https://dl.bintray.com/arrow-kt/arrow-kt/")
-    }
+//    maven {
+//        url = URI.create("https://dl.bintray.com/arrow-kt/arrow-kt/")
+//    }
 }
 
 val compileKotlin: KotlinCompile by tasks
@@ -37,9 +37,13 @@ compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 
+kapt {
+    useBuildCache = false
+}
+
 // unchanging name for boot JAR (referenced in Dockerfile)
 val bootJar: BootJar by tasks
-bootJar.archiveName = "app.jar"
+bootJar.archiveFileName.set("app.jar")
 
 sourceSets {
     create("integrationTest") {
@@ -141,7 +145,7 @@ tasks {
     }
 }
 
-val arrow_version: String = "0.10.4"
+val arrow_version: String = "0.13.2"
 
 dependencies {
     // Kotlin
@@ -153,9 +157,8 @@ dependencies {
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")
 
-    // Swagger
-    implementation("io.springfox:springfox-swagger2:2.9.2")
-    implementation("io.springfox:springfox-swagger-ui:2.9.2")
+    // OpenAPI: https://springdoc.org
+    implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
 
     // database
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -183,7 +186,7 @@ dependencies {
 
     // Arrow Kt
     implementation("io.arrow-kt:arrow-core:$arrow_version")
-    implementation("io.arrow-kt:arrow-syntax:$arrow_version")
+    //implementation("io.arrow-kt:arrow-syntax:$arrow_version")
     kapt("io.arrow-kt:arrow-meta:$arrow_version")
 
     // dev tools

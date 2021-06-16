@@ -35,8 +35,12 @@ docker push blacktower:5000/cosapps/checklister:<version>
 ## Generating the Client Library
 
 ```
+./gradlew composeUp
+curl http://localhost:8180/v3/api-docs | jq '.' > openapi.json
 ./gradlew :client:openApiGenerate
 cd subprojects/client/build/openapi
 cp ../../build.gradle.custom build.gradle
 chmod a+x gradlew
-./gradlew
+./gradlew publish
+```
+
