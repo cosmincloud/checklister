@@ -41,4 +41,6 @@ curl http://localhost:8180/v3/api-docs | jq '.' > openapi.json
 cd subprojects/client/build/openapi
 cp ../../build.gradle.custom build.gradle
 chmod a+x gradlew
-./gradlew
+./gradlew publish
+```
+
